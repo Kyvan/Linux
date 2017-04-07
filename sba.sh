@@ -376,12 +376,7 @@ function HTTP() {
 	sed -i "5i <H1>This freaking thing works, I sure do know what to do, or do I????????</H2>" /var/www/vhosts/www.$SWN.$WE/html/index.html
 
 	# Making the index file for secure page
-	echo -e "<Title>Service: HTTPS, Apache</Title>\n" > /var/www/vhosts/secure.$
-	
-	
-	
-	
-	$MN.$WE/html/index.html
+	echo -e "<Title>Service: HTTPS, Apache</Title>\n" > /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
 	sed -i "2i <H1>Server: $HN.$ZN$MN.$WE</H1>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
 	sed -i "3i <H2>Host: secure.$ZN$MN.$WE</H1>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
 	sed -i "4i <H2>IP Address: [172.16.$AI.$MN:443]</H2>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
