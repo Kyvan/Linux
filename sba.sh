@@ -21,19 +21,19 @@ function intSetup(){
 	sed -i "6i NETMASK=255.255.0.0" /etc/sysconfig/network-scripts/ifcfg-eth3
 
 	# Stoping and starting required services
-	service NetworkManager stop
-	chkconfig NetworkManager off
-	service iptables stop
-	chkconfig iptables off
-	service network restart
-	chkconfig network on
+	systemctl stop NetworkManager
+	systemctl disable NetworkManager
+	systemctl stop iptables
+	systemctl stop iptables
+	systemctl restart network
+	systemctl enable network
 	sed -i "6s|enforced\(disabled\)|" /etc/selinux/config
 }
 
 # Function to make iptables
 function fwRules() {
 	# Installing nc
-	yum install -y nc
+	$PKTMGR install -y nc
 		
 	# Setting up the rules
 	iptables -A INPUT -p tcp --dport 5999 -s 172.16.31.167 -j REJECT
@@ -49,7 +49,7 @@ function FTP() {
 	read -p "Please choose the name for FTP Download directory: " FTPD
 
 	# installing FTP service
-	yum install -y vsftpd ftp
+	$PKTMGR install -y vsftpd ftp
 
 	# Enabling anonymous uploading
 	sed -i "15s/^/# /" /etc/vsftpd/vsftpd.conf
@@ -78,24 +78,24 @@ function FTP() {
 	sed -i "117i listen_address=172.16.$FO.$MN" /etc/vsftpd/vsftpd.conf
 
 	# Restarting the network service and ftp service
-	service network restart
-	service vsftpd restart
-	chkconfig vsftpd on
-}
+	systemctl restart network
+	systemctl restart vsftpd
+	systemctl enable vsftpd
+	}
 
 # Function to make SSH
 function SSH() {
 	# Installing SSH
-	yum install -y openssh openssh-server openssh-clients
-	yum install -y openssl
+	$PKTMGR install -y openssh openssh-server openssh-clients
+	$PKTMGR install -y openssl
 
 	# Enabling RSA Authentication
 	sed -i "46i PasswordAuthentication yes" /etc/ssh/sshd_config
 	sed -i "47i RSAAuthentication yes" /etc/ssh/sshd_config
 	
 # Restarting SSH
-	service sshd restart
-	chkconfig sshd on
+	systemctl restart sshd
+	systemctl enable sshd
 }
 
 # Function to make DNS
@@ -107,7 +107,7 @@ function DNS() {
 	read -p "Please enter your Zone Name Extension: " ZNE
 
 	# Installing bind
-	yum install -y bind
+	$PKTMGR install -y bind
 
 	# Changing the resolv.conf file
 	echo -e "search $HN$MN.$ZNE\n" > /etc/resolv.conf
@@ -272,16 +272,16 @@ function DNS() {
 	sed -i "5i PEERDNS=no" /etc/sysconfig/network-scripts/ifcfg-eth2
 
 	# Restarting the bind service
-	chkconfig named on
-	service named restart
-	service network restart
+	systemctl enable named
+	systemctl restart named
+	systemctl restart network
 }
 
 # Function to install and configure IMAP
 function IMAP() {
-	# Installing IMAP
-	yum install -y dovecot
-	chkconfig dovecot on
+	# Installing IMAP, Squirrelmail, and PHP
+	$PKTMGR install -y dovecot epel-release squirrelmail php
+	systemctl enable dovecot
 
 	# Fixing the /etc/dovecot/dovecot.conf
 	sed -i "21i protocols = imap" /etc/dovecot/dovecot.conf
@@ -295,12 +295,6 @@ function IMAP() {
 	# Fixing /etc/dovecot/conf.d/10-auth.conf
 	sed -i "10i disable_plaintext_auth = no" /etc/dovecot/conf.d/10-auth.conf
 
-	# Installing Squirrelmail
-	yum install -y epel-release squirrelmail
-	
-	# Installing php
-	yum install -y php
-
 	# Loading the required PHP modules
 	sed -i "9s/$/\	index.php/" 	/etc/httpd/conf/httpd.conf
 	sed -i "17i LoadModule		php5_module	 modules/libphp5.so" /etc/httpd/conf/httpd.conf
@@ -311,8 +305,8 @@ function IMAP() {
 	sed -i "23i Incklude		conf.d/quirrelmail.conf" /etc/httpd/conf/httpd.conf
 
 	# Starting IMAP
-	service dovecot restart
-	chkconfig dovecot on
+	systemctl restart dovecot
+	systemctl enable dovecot
 }
 
 # Function to make HTTP
@@ -325,8 +319,7 @@ function HTTP() {
 	read -p "Please enter the Website's Extension: " WE
 
 	# Installing HTTP and SSL mod
-	yum install -y httpd
-	yum install -y mod_ssl
+	$PKTMGR install -y httpd mod_ssl 
 
 	# Making the document root for the sites
 	mkdir -p /var/www/vhosts/www.$FWN.$WE/html
@@ -449,8 +442,8 @@ function HTTP() {
 	sed -i "3i 172.16.30.$MN    $HN$MN.$WE www.$FWN.$WE www.$SWN.$WE $HN" /etc/hosts
 		
 	# Starting HTTP service
-	service httpd restart
-	chkconfig httpd on
+	systemctl restart httpd
+	systemctl enable httpd
 }
 
 # Function to install and configure postfix
@@ -460,7 +453,7 @@ function POSTFIX() {
 	read -p "Please choose your Mail Hostname Extension: " MHE
 
 	# Installing postfix and mailx
-	yum install -y postfix mailx
+	$PKTMGR install -y postfix mailx
 
 	# Editing the config file
 	sed -i "113s/#//" /etc/postfix/main.cf
@@ -472,11 +465,12 @@ function POSTFIX() {
 	sed -i "101s/#//" /etc/postfix/main.cf
 
 	# Starting POSTFIX service
-	service postfix restart
-	chkconfig postfix on
+	systemctl restart postfix
+	systemctl enable postfix
 }
 
 # Choosing your to input required info
+read -p "What Package Manager does your Distro use? " PKTMGR
 read -p "Please enter your Magic Number: " MN
 read -p "Please enter your HostName: " HN
 read -p "Please enter your HostName Extension: " HNE	
