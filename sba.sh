@@ -24,7 +24,7 @@ function intSetup(){
 	systemctl stop NetworkManager
 	systemctl disable NetworkManager
 	systemctl stop iptables
-	systemctl stop iptables
+	systemctl disable iptables
 	systemctl restart network
 	systemctl enable network
 	sed -i "6s|enforced\(disabled\)|" /etc/selinux/config
