@@ -440,7 +440,7 @@ function HTTP() {
 	sed -i "47i <VirtualHost 172.16.30.$MN:80>" /etc/httpd/conf/httpd.conf
 	sed -i "48i ServerName              www.$TWN.$WE" /etc/httpd/conf/httpd.conf
 	sed -i "49i ServerAlias             $TWN.$WE" /etc/httpd/conf/httpd.conf
-	sed -i "50i DocumentRoot            /var/www/vhosts/www.$SWN.$WE/html" /etc/httpd/conf/httpd.conf
+	sed -i "50i DocumentRoot            /var/www/vhosts/www.$TWN.$WE/html" /etc/httpd/conf/httpd.conf
 	sed -i "51i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
 	sed -i "52i ErrorLog                logs/error_log" /etc/httpd/conf/httpd.conf
 	sed -i "53i </VirtualHost>" /etc/httpd/conf/httpd.conf
