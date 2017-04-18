@@ -420,8 +420,8 @@ function HTTP() {
 	# Making HTTPS Virtual Host
 	sed -i "37i <VirtualHost 172.16.$AI.$MN:443>" /etc/httpd/conf/httpd.conf
 	sed -i "38i ServerName              secure.$ZN$MN.$WE" /etc/httpd/conf/httpd.conf
-	sed -i "39i DocumentRoot            /var/www/vhosts/secure.$ZN$MN.$WE" /etc/httpd/conf/httpd.conf
-	sed -i "40i DirectoryIndex		html/index.html" /etc/httpd/conf/httpd.conf
+	sed -i "39i DocumentRoot            /var/www/vhosts/secure.$ZN$MN.$WE/html" /etc/httpd/conf/httpd.conf
+	sed -i "40i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
 	sed -i "41i SSLCertificateFile      tls/cert/$ZN$MN.cert" /etc/httpd/conf/httpd.conf
 	sed -i "42i SSLCertificateKeyFile   tls/key/$ZN$MN.key" /etc/httpd/conf/httpd.conf
 	sed -i "43i SSLProtocol             -all    +TLSv1  +SSLv3" /etc/httpd/conf/httpd.conf
