@@ -372,7 +372,7 @@ function HTTP() {
 	echo -e "<Title>Service: HTTPS, Apache</Title>\n" > /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
 	sed -i "2i <H1>Server: $HN.$ZN$MN.$WE</H1>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
 	sed -i "3i <H2>Host: secure.$ZN$MN.$WE</H1>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
-	sed -i "4i <H2>IP Address: [172.16.$AI.$MN:443]</H2>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
+	sed -i "4i <H2>IP Address: [172.16.30.$MN:443]</H2>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
 	sed -i "5i <H1>This one is so secure the whole message is encrypted, or is it?</H2>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
 
 	# Making HTTP config file
@@ -387,56 +387,54 @@ function HTTP() {
 	sed -i "9i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
 	sed -i "10i ErrorLog		logs/error_log" /etc/httpd/conf/httpd.conf
 	sed -i "11i LogLevel		info" /etc/httpd/conf/httpd.conf
-	sed -i "12i LoadModule		log_config_module	modules/mod_log_config.so" /etc/httpd/conf/httpd.conf
-	sed -i "13i TransferLog		logs/access_log" /etc/httpd/conf/httpd.conf
-	sed -i "14i LoadModule		mime_module	modules/mod_mime.so" /etc/httpd/conf/httpd.conf
-	sed -i "15i LoadModule		dir_module	modules/mod_dir.so" /etc/httpd/conf/httpd.conf
-	sed -i "16i LoadModule		ssl_module	modules/mod_ssl.so" /etc/httpd/conf/httpd.conf
-	sed -i "17i TypesConfig			/etc/mime.types" /etc/httpd/conf/httpd.conf
+	sed -i "12i Include		conf.modules.d/*.conf" /etc/httpd/conf/httpd.conf
+	sed -i "13i Include		conf.d/*.conf" /etc/httpd/conf/httpd.conf
+	sed -i "14i TransferLog		logs/access_log" /etc/httpd/conf/httpd.conf
+	sed -i "15i TypesConfig			/etc/mime.types" /etc/httpd/conf/httpd.conf
+	sed -i "16i \	" /etc/httpd/conf/httpd.conf
+	sed -i "17i NameVirtualHost		172.16.30.$MN:80" /etc/httpd/conf/httpd.conf
 	sed -i "18i \	" /etc/httpd/conf/httpd.conf
-	sed -i "19i NameVirtualHost		172.16.30.$MN:80" /etc/httpd/conf/httpd.conf
-	sed -i "20i \	" /etc/httpd/conf/httpd.conf
 
 	# Making 1st Virtual Hosts
-	sed -i "21i <VirtualHost 172.16.30.$MN:80>" /etc/httpd/conf/httpd.conf
-	sed -i "22i ServerName              www.$FWN.$WE" /etc/httpd/conf/httpd.conf
-	sed -i "23i ServerAlias             $FWN.$WE" /etc/httpd/conf/httpd.conf
-	sed -i "24i DocumentRoot            /var/www/vhosts/www.$FWN.$WE/html" /etc/httpd/conf/httpd.conf
-	sed -i "25i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
-	sed -i "26i ErrorLog                logs/error_log" /etc/httpd/conf/httpd.conf
-	sed -i "27i </VirtualHost>" /etc/httpd/conf/httpd.conf
-	sed -i "28i \	" /etc/httpd/conf/httpd.conf
+	sed -i "19i <VirtualHost 172.16.30.$MN:80>" /etc/httpd/conf/httpd.conf
+	sed -i "20i ServerName              www.$FWN.$WE" /etc/httpd/conf/httpd.conf
+	sed -i "21i ServerAlias             $FWN.$WE" /etc/httpd/conf/httpd.conf
+	sed -i "22i DocumentRoot            /var/www/vhosts/www.$FWN.$WE/html" /etc/httpd/conf/httpd.conf
+	sed -i "23i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
+	sed -i "24i ErrorLog                logs/error_log" /etc/httpd/conf/httpd.conf
+	sed -i "25i </VirtualHost>" /etc/httpd/conf/httpd.conf
+	sed -i "26i \	" /etc/httpd/conf/httpd.conf
 	
 	# Making 2nd Virtual Host
-	sed -i "29i <VirtualHost 172.16.30.$MN:80>" /etc/httpd/conf/httpd.conf
-	sed -i "30i ServerName              www.$SWN.$WE" /etc/httpd/conf/httpd.conf
-	sed -i "31i ServerAlias             $SWN.$WE" /etc/httpd/conf/httpd.conf
-	sed -i "32i DocumentRoot            /var/www/vhosts/www.$SWN.$WE/html" /etc/httpd/conf/httpd.conf
-	sed -i "33i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
-	sed -i "34i ErrorLog                logs/error_log" /etc/httpd/conf/httpd.conf
-	sed -i "35i </VirtualHost>" /etc/httpd/conf/httpd.conf
-	sed -i "36i \	" /etc/httpd/conf/httpd.conf
+	sed -i "27i <VirtualHost 172.16.30.$MN:80>" /etc/httpd/conf/httpd.conf
+	sed -i "28i ServerName              www.$SWN.$WE" /etc/httpd/conf/httpd.conf
+	sed -i "29i ServerAlias             $SWN.$WE" /etc/httpd/conf/httpd.conf
+	sed -i "30i DocumentRoot            /var/www/vhosts/www.$SWN.$WE/html" /etc/httpd/conf/httpd.conf
+	sed -i "31i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
+	sed -i "32i ErrorLog                logs/error_log" /etc/httpd/conf/httpd.conf
+	sed -i "33i </VirtualHost>" /etc/httpd/conf/httpd.conf
+	sed -i "34i \	" /etc/httpd/conf/httpd.conf
 
 	# Making HTTPS Virtual Host
-	sed -i "37i <VirtualHost 172.16.$AI.$MN:443>" /etc/httpd/conf/httpd.conf
-	sed -i "38i ServerName              secure.$ZN$MN.$WE" /etc/httpd/conf/httpd.conf
-	sed -i "39i DocumentRoot            /var/www/vhosts/secure.$ZN$MN.$WE/html" /etc/httpd/conf/httpd.conf
-	sed -i "40i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
-	sed -i "41i SSLCertificateFile      tls/cert/$ZN$MN.cert" /etc/httpd/conf/httpd.conf
-	sed -i "42i SSLCertificateKeyFile   tls/key/$ZN$MN.key" /etc/httpd/conf/httpd.conf
-	sed -i "43i SSLProtocol             -all    +TLSv1  +SSLv3" /etc/httpd/conf/httpd.conf
-	sed -i "44i SSLEngine               On" /etc/httpd/conf/httpd.conf
-	sed -i "45i </Virtualhost>" /etc/httpd/conf/httpd.conf
-	sed -i "46i \	" /etc/httpd/conf/httpd.conf
+	sed -i "35i <VirtualHost 172.16.30.$MN:443>" /etc/httpd/conf/httpd.conf
+	sed -i "36i ServerName              secure.$ZN$MN.$WE" /etc/httpd/conf/httpd.conf
+	sed -i "37i DocumentRoot            /var/www/vhosts/secure.$ZN$MN.$WE/html" /etc/httpd/conf/httpd.conf
+	sed -i "38i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
+	sed -i "39i SSLCertificateFile      tls/cert/$ZN$MN.cert" /etc/httpd/conf/httpd.conf
+	sed -i "40i SSLCertificateKeyFile   tls/key/$ZN$MN.key" /etc/httpd/conf/httpd.conf
+	sed -i "41i SSLProtocol             -all    +TLSv1  +SSLv3" /etc/httpd/conf/httpd.conf
+	sed -i "42i SSLEngine               On" /etc/httpd/conf/httpd.conf
+	sed -i "43i </Virtualhost>" /etc/httpd/conf/httpd.conf
+	sed -i "44i \	" /etc/httpd/conf/httpd.conf
 
 	# Making 3rd Virtual Host
-	sed -i "47i <VirtualHost 172.16.30.$MN:80>" /etc/httpd/conf/httpd.conf
-	sed -i "48i ServerName              www.$TWN.$WE" /etc/httpd/conf/httpd.conf
-	sed -i "49i ServerAlias             $TWN.$WE" /etc/httpd/conf/httpd.conf
-	sed -i "50i DocumentRoot            /var/www/vhosts/www.$TWN.$WE/html" /etc/httpd/conf/httpd.conf
-	sed -i "51i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
-	sed -i "52i ErrorLog                logs/error_log" /etc/httpd/conf/httpd.conf
-	sed -i "53i </VirtualHost>" /etc/httpd/conf/httpd.conf
+	sed -i "45i <VirtualHost 172.16.30.$MN:80>" /etc/httpd/conf/httpd.conf
+	sed -i "46i ServerName              www.$TWN.$WE" /etc/httpd/conf/httpd.conf
+	sed -i "47i ServerAlias             $TWN.$WE" /etc/httpd/conf/httpd.conf
+	sed -i "48i DocumentRoot            /var/www/vhosts/www.$TWN.$WE/html" /etc/httpd/conf/httpd.conf
+	sed -i "49i DirectoryIndex		index.html" /etc/httpd/conf/httpd.conf
+	sed -i "50i ErrorLog                logs/error_log" /etc/httpd/conf/httpd.conf
+	sed -i "51i </VirtualHost>" /etc/httpd/conf/httpd.conf
 
 	# Adding sites to /etc/hosts files
 	sed -i "3i 172.16.30.$MN    $HN$MN.$WE www.$FWN.$WE www.$SWN.$WE $HN" /etc/hosts
