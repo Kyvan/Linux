@@ -4,11 +4,11 @@ read -p "What is the IP of the client sending the logs? " slip
 read -p "What is the client hostname? " chn
 
 function syslogConfig() {
-	echo -e "$ModLoad imtcp\n" >> /etc/rsyslog.conf
+	echo -e "\$ModLoad imtcp\n" >> /etc/rsyslog.conf
 	sed -i "2i \ " /etc/rsyslog.conf
-	sed -i "3i $InputTCPServerRun 514" /etc/rsyslog.conf
+	sed -i "3i \$InputTCPServerRun 514" /etc/rsyslog.conf
 	sed -i "4i \ " /etc/rsyslog.conf
-	sed -i "5i if ($fromhost-ip startswith '$slip') then {" /etc/rsyslog.conf 
+	sed -i "5i if (\$fromhost-ip startswith $slip) then {" /etc/rsyslog.conf 
 	sed -i "6i # email-messages" /etc/rsyslog.conf""
 	sed -i "7i #" /etc/rsyslog.conf   ""
 	sed -i "8i mail.*\	\	\	-/var/log/chn/mail" /etc/rsyslog.conf
