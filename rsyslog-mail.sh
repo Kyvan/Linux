@@ -2,6 +2,10 @@
 
 read -p "What is the domain name of the rsyslog server? " dsn
 read -p "Who should receive the emails? " name
+read -p "What is the destination IP address or hotname? " iph
+read -p "What is the destination port number? " port
+
+sed -i "48i *.*	$iph:$port" /etc/rsyslog.conf
 
 echo -e "$ModLoad ommail\n" >> /etc/rsyslog.d/remote.conf
 sed -i "2i \ " /etc/rsyslog.d/remote.conf
