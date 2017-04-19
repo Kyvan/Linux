@@ -23,6 +23,8 @@ function syslogConfig() {
 	sed -i "13i \ " /etc/rsyslog.d/remote.conf
 	sed -i "14i if $msg contains ' user NOT in sudoers ' then :ommail:;mailBody" /etc/rsyslog.d/remote.conf
 	sed -i "15i ActionExecOnlyOnceEveryInterval 0" /etc/rsyslog.d/remote.conf
+	systemctl restart rsyslog
+	systemctl enable rsyslog
 }
 
 if rpm -qa | grep rsyslog ; then

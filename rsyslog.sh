@@ -53,6 +53,8 @@ function syslogConfig() {
 	sed -i "47i }" /etc/rsyslog.conf
 	sed -i "48i stop" /etc/rsyslog.conf
 	sed -i "49i \ " /etc/rsyslog.conf
+	systemctl restart rsyslog
+	systemctl enable rsyslog
 }
 
 if rpm -qa | grep rsyslog ; then
