@@ -6,7 +6,7 @@ read -p "What is the destination IP address or hotname? " iph
 read -p "What is the destination port number? " port
 
 function syslogConfig() {
-	sed -i "48i *.*	$iph:$port" /etc/rsyslog.conf
+	sed -i "48i *.*	@@$iph:$port" /etc/rsyslog.conf
 
 	echo -e "$ModLoad ommail\n" >> /etc/rsyslog.d/remote.conf
 	sed -i "2i \ " /etc/rsyslog.d/remote.conf
