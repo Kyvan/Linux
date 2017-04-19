@@ -300,9 +300,7 @@ function IMAP() {
 	sed -i "17i LoadModule		php5_module	 modules/libphp5.so" /etc/httpd/conf/httpd.conf
 	sed -i "18i AddHandler		php5-script	.php" /etc/httpd/conf/httpd.conf
 	sed -i "19i AddType		text/html	.php" /etc/httpd/conf/httpd.conf
-	sed -i "21i LoadModule		alias_module	modules/mod_alias.so" /etc/httpd/conf/httpd.conf
-	sed -i "22i LoadModule		authz_host_module	modules/mod_authz_host.so" /etc/httpd/conf/httpd.cong
-	sed -i "23i Incklude		conf.d/quirrelmail.conf" /etc/httpd/conf/httpd.conf
+	sed -i "20i Include		conf.d/squirrelmail.conf" /etc/httpd/conf/httpd.conf
 
 	# Starting IMAP
 	systemctl restart dovecot
