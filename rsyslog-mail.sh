@@ -28,7 +28,7 @@ function syslogConfig() {
 	systemctl enable rsyslog
 }
 
-if rpm -qa | grep rsyslog ; then
+if rpm -qa | grep -q rsyslog ; then
 	syslogConfig
 else
 	yum install -y rsyslog
