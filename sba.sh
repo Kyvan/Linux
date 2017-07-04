@@ -27,7 +27,7 @@ function intSetup(){
 	systemctl disable iptables
 	systemctl restart network
 	systemctl enable network
-	sed -i 's/enforcing/disabled/g' /etc/selinux/config
+	sed -i 's/enforcing/disabled/' /etc/selinux/config
 }
 
 # Function to make iptables
