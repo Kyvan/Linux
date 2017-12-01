@@ -320,18 +320,11 @@ function HTTP() {
 	$PKTMGR install -y httpd mod_ssl 
 
 	# Making the document root for the sites
-	mkdir -p /var/www/vhosts/www.$FWN.$WE/html
-	mkdir -p /var/www/vhosts/www.$FWN.$WE/log
-	mkdir -p /var/www/vhosts/www.$SWN.$WE/html
-	mkdir -p /var/www/vhosts/www.$SWN.$WE/log
-	mkdir -p /var/www/vhosts/www.$TWN.$WE/html
-	mkdir -p /var/www/vhosts/www.$TWN.$WE/log
-	mkdir -p /var/www/vhosts/secure.$ZN$MN.$WE/html
-	mkdir -p /var/www/vhosts/secure.$ZN$MN.$WE/log
+	cd /var/www/vhosts
+	mkdir -p www.$FWN.$WE/html www.$FWN.$WE/log www.$SWN.$WE/html www.$SWN.$WE/log www.$TWN.$WE/html www.$TWN.$WE/log secure.$ZN$MN.$WE/html secure.$ZN$MN.$WE/log
 	
 	# Making the directories for RSA certifications
-	mkdir -p /etc/httpd/tls/cert
-	mkdir -p /etc/httpd/tls/key/
+	mkdir -p /etc/httpd/tls/cert /etc/httpd/tls/key
 
 	# Giving correct permissions to each directory
 	chmod 700 /etc/httpd/tls/key
