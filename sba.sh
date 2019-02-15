@@ -34,7 +34,7 @@ function intSetup(){
 function fwRules() {
 	# Installing nc
 	$PKTMGR install -y nc
-		
+
 	# Setting up the rules
 	iptables -A INPUT -p tcp --dport 5999 -s 172.16.31.167 -j REJECT
 	iptables -A INPUT -p tcp --dport 5999 -s 172.16.31."$MN" -j REJECT
@@ -54,7 +54,7 @@ function FTP() {
 	# Enabling anonymous uploading
 	sed -i "15s/^/# /" /etc/vsftpd/vsftpd.conf
 	sed -i "27s/#//" /etc/vsftpd/vsftpd.conf
-	
+
 	# Making an Upload and Download directory with appropriate permissions
 	mkdir -p /var/ftp/$FTPU
 	chmod 777 /var/ftp/$FTPU
@@ -65,7 +65,7 @@ function FTP() {
 	echo -e "Kyvan\n" > /var/ftp/$FTPD/readme.ftp
 	sed -i "2i emam0009" /var/ftp/$FTPD/readme.ftp
 	sed -i "3i Testing to see if user can download from DOWNLOAD folder in FTP directory" /var/ftp/$FTPD/readme.ftp
-	
+
 	# creating the alias interface for ftp
 	echo -e "DEVICE=eth3:0\n" > /etc/sysconfig/network-scripts/"ifcfg-eth3:0"
 	sed -i "2i TYPE=Ethernet" /etc/sysconfig/network-scripts/"ifcfg-eth3:0"
@@ -73,7 +73,7 @@ function FTP() {
 	sed -i "4i BOOTPROTO=none" /etc/sysconfig/network-scripts/"ifcfg-eth3:0"
 	sed -i "5i IPADDR=172.16.$FO.$MN" /etc/sysconfig/network-scripts/"ifcfg-eth3:0"
 	sed -i "6i NETMASK=255.255.0.0" /etc/sysconfig/network-scripts/"ifcfg-eth3:0"
-	
+
 	# Making FTP listen to the aliased interface
 	sed -i "117i listen_address=172.16.$FO.$MN" /etc/vsftpd/vsftpd.conf
 
@@ -92,7 +92,7 @@ function SSH() {
 	# Enabling RSA Authentication
 	sed -i "46i PasswordAuthentication yes" /etc/ssh/sshd_config
 	sed -i "47i RSAAuthentication yes" /etc/ssh/sshd_config
-	
+
 # Restarting SSH
 	systemctl restart sshd
 	systemctl enable sshd
@@ -113,7 +113,7 @@ function DNS() {
 	echo -e "search $HN$MN.$ZNE\n" > /etc/resolv.conf
 	sed -i "2i nameserver	127.0.0.1" /etc/resolv.conf
 	sed -i "3i nameserver	172.16.30.$MN" /etc/resolv.conf
-	
+
 	# Fixing /etc/rsyslog.conf file
 	sed -i '63i # Save log messages in /var/log/dns.log' /etc/rsyslog.conf
 	sed -i '10i daemon.debug	/var/log/dns.log' /etc/rsyslog.conf
@@ -133,7 +133,7 @@ function DNS() {
 	sed -i "12i \	IN	NS	ns1.$FZN.$ZNE." /var/named/$FZN.zone
 	sed -i "13i \	IN	NS	ns2.$FZN.$ZNE." /var/named/$FZN.zone
 	sed -i "14i \	" /var/named/$FZN.zone
-	sed -i "15i @	IN	A	172.16.30.$MN" /var/named/$FZN.zone	
+	sed -i "15i @	IN	A	172.16.30.$MN" /var/named/$FZN.zone
 	sed -i "16i ns1	IN	A	172.16.30.$MN" /var/named/$FZN.zone
 	sed -i "17i ns2	IN	A	172.16.30.$MN" /var/named/$FZN.zone
 	sed -i "18i www	IN	A	172.16.30.$MN" /var/named/$FZN.zone
@@ -153,7 +153,7 @@ function DNS() {
 	sed -i "12i \	IN	NS	ns1.$SZN.$ZNE." /var/named/$SZN.zone
 	sed -i "13i \	IN	NS	ns2.$SZN.$ZNE." /var/named/$SZN.zone
 	sed -i "14i \	" /var/named/$SZN.zone
-	sed -i "15i @	IN	A	172.16.30.$MN" /var/named/$SZN.zone	
+	sed -i "15i @	IN	A	172.16.30.$MN" /var/named/$SZN.zone
 	sed -i "16i ns1	IN	A	172.16.30.$MN" /var/named/$SZN.zone
 	sed -i "17i ns2	IN	A	172.16.30.$MN" /var/named/$SZN.zone
 	sed -i "18i ftp	IN	A	172.16.30.$MN" /var/named/$SZN.zone
@@ -173,12 +173,12 @@ function DNS() {
 	sed -i "12i \	IN	NS	ns1.$TZN.$ZNE." /var/named/$TZN.zone
 	sed -i "13i \	IN	NS	ns2.$TZN.$ZNE." /var/named/$TZN.zone
 	sed -i "14i \	" /var/named/$TZN.zone
-	sed -i "15i @	IN	A	172.16.30.$MN" /var/named/$TZN.zone	
+	sed -i "15i @	IN	A	172.16.30.$MN" /var/named/$TZN.zone
 	sed -i "16i ns1	IN	A	172.16.30.$MN" /var/named/$TZN.zone
 	sed -i "17i ns2	IN	A	172.16.30.$MN" /var/named/$TZN.zone
 	sed -i "18i www	IN	A	172.16.30.$MN" /var/named/$TZN.zone
-	
-	# Making the reverse zone 
+
+	# Making the reverse zone
 	echo -e "\$TTL 1D\n" > /var/named/16.172.zone
 	sed -i "2i \$ORIGIN 16.172.IN-ADDR.ARPA." /var/named/16.172.zone
 	sed -i "3i \	" /var/named/16.172.zone
@@ -317,12 +317,12 @@ function HTTP() {
 	read -p "Please enter the Website's Extension: " WE
 
 	# Installing HTTP and SSL mod
-	$PKTMGR install -y httpd mod_ssl 
+	$PKTMGR install -y httpd mod_ssl
 
 	# Making the document root for the sites
 	cd /var/www/vhosts
 	mkdir -p www.$FWN.$WE/html www.$FWN.$WE/log www.$SWN.$WE/html www.$SWN.$WE/log www.$TWN.$WE/html www.$TWN.$WE/log secure.$ZN$MN.$WE/html secure.$ZN$MN.$WE/log
-	
+
 	# Making the directories for RSA certifications
 	mkdir -p /etc/httpd/tls/cert /etc/httpd/tls/key
 
@@ -333,7 +333,7 @@ function HTTP() {
 	# Making the certificates for the Secure website
 	cd /etc/httpd/tls
 	openssl req -x509 -newkey rsa -days 120 -nodes -keyout key/$ZN$MN.key -out cert/$ZN$MN.cert -subj "/O=$ON/OU=$ZN$MN.$WE/CN=secure.$ZN$MN.$WE"
-	
+
 	# Making index for localhost
 	echo -e "<Title>Server: HTTP, Apache</Title>\n" > /var/www/html/index.html
 	sed -i "2i <H1> $HN$MN.$WE<H1>" /var/www/html/index.html
@@ -395,7 +395,7 @@ function HTTP() {
 	sed -i "24i ErrorLog                logs/error_log" /etc/httpd/conf/httpd.conf
 	sed -i "25i </VirtualHost>" /etc/httpd/conf/httpd.conf
 	sed -i "26i \	" /etc/httpd/conf/httpd.conf
-	
+
 	# Making 2nd Virtual Host
 	sed -i "27i <VirtualHost 172.16.30.$MN:80>" /etc/httpd/conf/httpd.conf
 	sed -i "28i ServerName              www.$SWN.$WE" /etc/httpd/conf/httpd.conf
@@ -429,7 +429,7 @@ function HTTP() {
 
 	# Adding sites to /etc/hosts files
 	sed -i "3i 172.16.30.$MN    $HN$MN.$WE www.$FWN.$WE www.$SWN.$WE $HN" /etc/hosts
-		
+
 	# Starting HTTP service
 	systemctl restart httpd
 	systemctl enable httpd
@@ -462,7 +462,7 @@ function POSTFIX() {
 read -p "What Package Manager does your Distro use? " PKTMGR
 read -p "Please enter your Magic Number: " MN
 read -p "Please enter your HostName: " HN
-read -p "Please enter your HostName Extension: " HNE	
+read -p "Please enter your HostName Extension: " HNE
 
 function funcRun() {
 	# Asking the user to choose a function to run
@@ -486,15 +486,15 @@ function funcRun() {
 		funcRun
 	elif [ "$FR" = 6 ] ; then
 		IMAP
-		funcRun	
+		funcRun
 	elif [ "$FR" = 7 ] ; then
 		HTTP
 		funcRun
 	elif [ "$FR" = 8 ] ; then
 		POSTFIX
-		funcRun	
+		funcRun
 	elif [ "$FR" = 9 ] ; then
-		fwRules		
+		fwRules
 		intSetup
 		FTP
 		SSH
