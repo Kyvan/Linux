@@ -2,7 +2,7 @@
 
 # Making a script for the SBA to make shit run super duper fast
 # Kyvan Emami Tabrizi - 040778865 - emam0009
-# March 10thm, 0016
+# March 10th, 2016
 
 # Function to make interfaces
 function intSetup(){
