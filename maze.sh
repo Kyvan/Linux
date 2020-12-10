@@ -7,7 +7,6 @@
 # shuf4="$(shuf -i 1-4 -n 1)"
 
 # Making some variables
-line="$(wc -l userList.txt | awk '{print $1}')"
 shuf="$(shuf -i 0-9 -n 1)"
 rand="$(rand -N $(shuf -i 0-5 -n 1))" 
 ranDot="$(rand -d . -N $(shuf -i 0-5 -n 1))"
@@ -19,7 +18,7 @@ dir='{0,1,2,3,4,5,6,7,8,9}'
 eval mkdir -p $HOME/mazetest/Maze/.$dir/.$dir/.$dir/.$dir
 
 # A for loop to select a user for each user
-for (( i = 1 ; i <= $line ; i++ )) ; do
+while read line ; do
 	user="$(head -n $i userList.txt | tail -n 1)"
 	echo "$i" > Maze/.$shuf/.$shuf/.$shuf/.$user.unk
 	echo "This is not the file, pay closer attention to the INSTRUCTIONS." > Maze/.$shuf/.$shuf/..$user.unk
@@ -39,4 +38,4 @@ for (( i = 1 ; i <= $line ; i++ )) ; do
 			touch Maze/.$shuf/"$rand $rand"
 		fi
 	done
-done
+done < userList.txt
