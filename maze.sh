@@ -17,7 +17,7 @@ dir='{0,1,2,3,4,5,6,7,8,9}'
 # Making the Directory structure
 eval mkdir -p $HOME/mazetest/Maze/.$dir/.$dir/.$dir/.$dir
 
-# A for loop to select a user for each user
+# A while loop to create folders/files for each user
 while read line ; do
 	user="$(head -n $i userList.txt | tail -n 1)"
 	echo "$i" > Maze/.$shuf/.$shuf/.$shuf/.$user.unk
