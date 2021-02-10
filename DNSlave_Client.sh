@@ -1,10 +1,12 @@
+#!/bin/bash -u
+
 # Asking for the DNSlave IP address
-read -p "Please choose the Slave DNS third Octet number: " TON
-read -p "Please choose the Master Magic Number: " MMN
-read -p "Please enter your First Zone Name: " FZN
-read -p "Please enter your Second Zone Name: " SZN
-read -p "Please enter your Third Zone Name: " TZN
-read -p "Please enter your Zone Name Extension: " ZNE
+read -rp "Please choose the Slave DNS third Octet number: " TON
+read -rp "Please choose the Master Magic Number: " MMN
+read -rp "Please enter your First Zone Name: " FZN
+read -rp "Please enter your Second Zone Name: " SZN
+read -rp "Please enter your Third Zone Name: " TZN
+read -rp "Please enter your Zone Name Extension: " ZNE
 	
 # Making the DNSlave config file
 echo -e "options {\n" > /etc/named.conf
@@ -59,5 +61,3 @@ sed -i "49i \"/etc/named.root.key\";" /etc/named.conf
 
 # Restarting the DNS service
 service named restart
-
-

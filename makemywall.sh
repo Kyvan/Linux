@@ -27,7 +27,7 @@
 set -e
 
 usage() {
-  cat << EOH
+cat <<- EOH
 Generate wallpapers to a specified size, given a base picture
 
 $0 [-vs] width height [picture [picture [...]]]
