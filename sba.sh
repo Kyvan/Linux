@@ -5,7 +5,7 @@
 # March 10th, 2016
 
 # Function to make interfaces
-function intSetup(){
+intSetup() {
 	# Making interface eth2
 	echo -e "DEVICE=eth2\n" > /etc/sysconfig/network-scripts/ifcfg-eth2
 	sed -i '2i TYPE=Ethernet' /etc/sysconfig/network-scripts/ifcfg-eth2
@@ -31,7 +31,7 @@ function intSetup(){
 }
 
 # Function to make iptables
-function fwRules() {
+fwRules() {
 	# Installing iptables
 	yum install -y iptables
 	
@@ -42,17 +42,17 @@ function fwRules() {
 	systemctl enable iptables
 
 	# Setting up the rules
-	iptables -A INPUT -p tcp --dport 5999 -s 172.16.31.167 -j REJECT
-	iptables -A INPUT -p tcp --dport 5999 -s 172.16.31."$MN" -j REJECT
-	iptables -A INPUT -p tcp --dport 5999 -j ACCEPT
+	iptables -A INPUT -rp tcp --dport 5999 -s 172.16.31.167 -j REJECT
+	iptables -A INPUT -rp tcp --dport 5999 -s 172.16.31."$MN" -j REJECT
+	iptables -A INPUT -rp tcp --dport 5999 -j ACCEPT
 }
 
 # Function making an FTP server
-function FTP() {
+FTP() {
 	# Asking for the required info for FTP
-	read -p "Please choose your FTP third octet number: " FO
-	read -p "Please choose the name for FTP Upload directory: " FTPU
-	read -p "Please choose the name for FTP Download directory: " FTPD
+	read -rp "Please choose your FTP third octet number: " FO
+	read -rp "Please choose the name for FTP Upload directory: " FTPU
+	read -rp "Please choose the name for FTP Download directory: " FTPD
 
 	# installing FTP service
 	$PKTMGR install -y vsftpd ftp
@@ -62,9 +62,9 @@ function FTP() {
 	sed -i "27s/#//" /etc/vsftpd/vsftpd.conf
 
 	# Making an Upload and Download directory with appropriate permissions
-	mkdir -p /var/ftp/$FTPU
+	mkdir -rp /var/ftp/$FTPU
 	chmod 777 /var/ftp/$FTPU
-	mkdir -p /var/ftp/$FTPD
+	mkdir -rp /var/ftp/$FTPD
 	chmod 555 /var/ftp/$FTPD
 
 	# Making a file for testing FTP
@@ -90,7 +90,7 @@ function FTP() {
 	}
 
 # Function to make SSH
-function SSH() {
+SSH() {
 	# Installing SSH
 	$PKTMGR install -y openssh openssh-server openssh-clients
 	$PKTMGR install -y openssl
@@ -105,12 +105,12 @@ function SSH() {
 }
 
 # Function to make DNS
-function DNS() {
+DNS() {
 	# Asking for the info needed for DNS
-	read -p "Please enter your First Zone Name: " FZN
-	read -p "Please enter your Second Zone Name: " SZN
-	read -p "Please enter your Third Zone Name: " TZN
-	read -p "Please enter your Zone Name Extension: " ZNE
+	read -rp "Please enter your First Zone Name: " FZN
+	read -rp "Please enter your Second Zone Name: " SZN
+	read -rp "Please enter your Third Zone Name: " TZN
+	read -rp "Please enter your Zone Name Extension: " ZNE
 
 	# Installing bind
 	$PKTMGR install -y bind
@@ -284,7 +284,7 @@ function DNS() {
 }
 
 # Function to install and configure IMAP
-function IMAP() {
+IMAP() {
 	# Installing IMAP, Squirrelmail, and PHP
 	$PKTMGR install -y dovecot epel-release squirrelmail php
 	systemctl enable dovecot
@@ -314,30 +314,30 @@ function IMAP() {
 }
 
 # Function to make HTTP
-function HTTP() {
+HTTP() {
 	# Asking for required info for HTTP
-	read -p "Please enter the First Website's Name: " FWN
-	read -p "Please enter the Second Website's Name: " SWN
-	read -p "Please enter the Third Website's Name: " TWN
-	read -p "Please enter the Secure Website's Name: " ZN
-	read -p "Please enter the Website's Extension: " WE
+	read -rp "Please enter the First Website's Name: " FWN
+	read -rp "Please enter the Second Website's Name: " SWN
+	read -rp "Please enter the Third Website's Name: " TWN
+	read -rp "Please enter the Secure Website's Name: " ZN
+	read -rp "Please enter the Website's Extension: " WE
 
 	# Installing HTTP and SSL mod
 	$PKTMGR install -y httpd mod_ssl
 
 	# Making the document root for the sites
-	cd /var/www/vhosts
-	mkdir -p www.$FWN.$WE/html www.$FWN.$WE/log www.$SWN.$WE/html www.$SWN.$WE/log www.$TWN.$WE/html www.$TWN.$WE/log secure.$ZN$MN.$WE/html secure.$ZN$MN.$WE/log
+	cd /var/www/vhosts || exit
+	mkdir -rp www.$FWN.$WE/html www.$FWN.$WE/log www.$SWN.$WE/html www.$SWN.$WE/log www.$TWN.$WE/html www.$TWN.$WE/log secure.$ZN$MN.$WE/html secure.$ZN$MN.$WE/log
 
 	# Making the directories for RSA certifications
-	mkdir -p /etc/httpd/tls/cert /etc/httpd/tls/key
+	mkdir -rp /etc/httpd/tls/cert /etc/httpd/tls/key
 
 	# Giving correct permissions to each directory
 	chmod 700 /etc/httpd/tls/key
 	chmod 755 /etc/httpd/tls/cert
 
 	# Making the certificates for the Secure website
-	cd /etc/httpd/tls
+	cd /etc/httpd/tls || exit
 	openssl req -x509 -newkey rsa -days 120 -nodes -keyout key/$ZN$MN.key -out cert/$ZN$MN.cert -subj "/O=$ON/OU=$ZN$MN.$WE/CN=secure.$ZN$MN.$WE"
 
 	# Making index for localhost
@@ -442,10 +442,10 @@ function HTTP() {
 }
 
 # Function to install and configure postfix
-function POSTFIX() {
+POSTFIX() {
 	# Asking for needed info for postfix
-	read -p "Please choose your Mail Hostname: " MH
-	read -p "Please choose your Mail Hostname Extension: " MHE
+	read -rp "Please choose your Mail Hostname: " MH
+	read -rp "Please choose your Mail Hostname Extension: " MHE
 
 	# Installing postfix and mailx
 	$PKTMGR install -y postfix mailx
@@ -465,14 +465,14 @@ function POSTFIX() {
 }
 
 # Choosing your to input required info
-read -p "What Package Manager does your Distro use? " PKTMGR
-read -p "Please enter your Magic Number: " MN
-read -p "Please enter your HostName: " HN
-read -p "Please enter your HostName Extension: " HNE
+read -rp "What Package Manager does your Distro use? " PKTMGR
+read -rp "Please enter your Magic Number: " MN
+read -rp "Please enter your HostName: " HN
+read -rp "Please enter your HostName Extension: " HNE
 
-function funcRun() {
+funcRun() {
 	# Asking the user to choose a function to run
-	read -p "Which function do you want to run (1- fwRules, 2- intSetup, 3- FTP, 4- SSH. 5- DNS, 6- IMAP, 7- HTTP, 8- POSTFIX, 9- All the scripts, [Press any other key to exit the script]) > " FR
+	read -rp "Which function do you want to run (1- fwRules, 2- intSetup, 3- FTP, 4- SSH. 5- DNS, 6- IMAP, 7- HTTP, 8- POSTFIX, 9- All the scripts, [Press any other key to exit the script]) > " FR
 
 	# Checking to see which function to run
 	if [ "$FR" = 1 ] ; then
@@ -510,7 +510,7 @@ function funcRun() {
 		POSTFIX
 		funcRun
 	else
-		break
+		exit
 	fi
 }
 
