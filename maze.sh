@@ -21,7 +21,8 @@ eval mkdir -p "${HOME}/mazetest/Maze/.$dir/.$dir/.$dir/.$dir"
 while read -r line ; do
 	echo "$line" > Maze/."$shuf"/."$shuf"/."$shuf"/."$line".unk
 	echo "This is not the file, pay closer attention to the INSTRUCTIONS." > Maze/."$shuf"/."$shuf"/.."$line".unk
-	echo -e "Congrats on finding the correct file.\nWrite a command to find all the files that contain your username.\nWrite a Command that finds only files with your username in them where the name begins with a space.\nWrite a Command that finds only hidden files with your username in them.\nWrite a Command that finds only your username in a hidden file that ends with and unknown three character file extension.\nWrite the commands you used to find the files above in a file named A4-7.txt" > Maze/."$shuf"/."$shuf"/."$shuf"/."$shuf"/"$user*txt"
+	echo -e "Congrats on finding the correct file.\nWrite a command to find all the files that contain your username."
+	echo -e "Write a Command that finds only files with your username in them where the name begins with a space.\nWrite a Command that finds only hidden files with your username in them.\nWrite a Command that finds only your username in a hidden file that ends with and unknown three character file extension.\nWrite the commands you used to find the files above in a file named A4-7.txt" > "Maze/.$shuf/.$shuf/.$shuf/.$shuf/$line*txt"
 
 	# A for loop to make the maze
 	for (( counter = 1 ; counter <= 200 ; counter++ )) ; do
