@@ -1,4 +1,4 @@
-#!/bin/sh -u
+#!/bin/bash -u
 
 # Making a script for the SBA to make shit run super duper fast
 # Kyvan Emami Tabrizi - 040778865 - emam0009
@@ -125,64 +125,64 @@ DNS() {
 	sed -i '10i daemon.debug	/var/log/dns.log' /etc/rsyslog.conf
 
 	# Making the 1st forward zone
-	echo -e "\$TTL 1D\n" > /var/named/$FZN.zone
-	sed -i "2i \$ORIGIN $FZN.$ZNE." /var/named/$FZN.zone
-	sed -i "3i \	" /var/named/$FZN.zone
-	sed -i "4i @	IN	SOA	ns1.$FZN.$ZNE.	dnsadmin.$FZN.$ZNE. (" /var/named/$FZN.zone
-	sed -i "5i \	2015013101" /var/named/$FZN.zone
-	sed -i "6i \	3H" /var/named/$FZN.zone
-	sed -i "7i \	15M" /var/named/$FZN.zone
-	sed -i "8i \	1W" /var/named/$FZN.zone
-	sed -i "9i \	3H" /var/named/$FZN.zone
-	sed -i "10i )" /var/named/$FZN.zone
-	sed -i "11i \	" /var/named/$FZN.zone
-	sed -i "12i \	IN	NS	ns1.$FZN.$ZNE." /var/named/$FZN.zone
-	sed -i "13i \	IN	NS	ns2.$FZN.$ZNE." /var/named/$FZN.zone
-	sed -i "14i \	" /var/named/$FZN.zone
-	sed -i "15i @	IN	A	172.16.30.$MN" /var/named/$FZN.zone
-	sed -i "16i ns1	IN	A	172.16.30.$MN" /var/named/$FZN.zone
-	sed -i "17i ns2	IN	A	172.16.30.$MN" /var/named/$FZN.zone
-	sed -i "18i www	IN	A	172.16.30.$MN" /var/named/$FZN.zone
+	echo -e "\$TTL 1D\n" > "/var/named/$FZN.zone"
+	sed -i "2i \$ORIGIN $FZN.$ZNE." "/var/named/$FZN.zone"
+	sed -i "3i \	" "/var/named/$FZN.zone"
+	sed -i "4i @	IN	SOA	ns1.$FZN.$ZNE.	dnsadmin.$FZN.$ZNE. (" "/var/named/$FZN.zone"
+	sed -i "5i \	2015013101" "/var/named/$FZN.zone"
+	sed -i "6i \	3H" "/var/named/$FZN.zone"
+	sed -i "7i \	15M" "/var/named/$FZN.zone"
+	sed -i "8i \	1W" "/var/named/$FZN.zone"
+	sed -i "9i \	3H" "/var/named/$FZN.zone"
+	sed -i "10i )" "/var/named/$FZN.zone"
+	sed -i "11i \	" "/var/named/$FZN.zone"
+	sed -i "12i \	IN	NS	ns1.$FZN.$ZNE." "/var/named/$FZN.zone"
+	sed -i "13i \	IN	NS	ns2.$FZN.$ZNE." "/var/named/$FZN.zone"
+	sed -i "14i \	" "/var/named/$FZN.zone"
+	sed -i "15i @	IN	A	172.16.30.$MN" "/var/named/$FZN.zone"
+	sed -i "16i ns1	IN	A	172.16.30.$MN" "/var/named/$FZN.zone"
+	sed -i "17i ns2	IN	A	172.16.30.$MN" "/var/named/$FZN.zone"
+	sed -i "18i www	IN	A	172.16.30.$MN" "/var/named/$FZN.zone"
 
 	# Making the 2nd forward zone
-	echo -e "\$TTL 1D\n" > /var/named/$SZN.zone
-	sed -i "2i \$ORIGIN $SZN.$ZNE." /var/named/$SZN.zone
-	sed -i "3i \	" /var/named/$SZN.zone
-	sed -i "4i @	1D	IN	SOA	ns1.$SZN.$ZNE.	dnsadmin.$SZN.$ZNE. (" /var/named/$SZN.zone
-	sed -i "5i \	2015013101" /var/named/$SZN.zone
-	sed -i "6i \	3H" /var/named/$SZN.zone
-	sed -i "7i \	15M" /var/named/$SZN.zone
-	sed -i "8i \	1W" /var/named/$SZN.zone
-	sed -i "9i \	3H" /var/named/$SZN.zone
-	sed -i "10i )" /var/named/$SZN.zone
-	sed -i "11i \	" /var/named/$SZN.zone
-	sed -i "12i \	IN	NS	ns1.$SZN.$ZNE." /var/named/$SZN.zone
-	sed -i "13i \	IN	NS	ns2.$SZN.$ZNE." /var/named/$SZN.zone
-	sed -i "14i \	" /var/named/$SZN.zone
-	sed -i "15i @	IN	A	172.16.30.$MN" /var/named/$SZN.zone
-	sed -i "16i ns1	IN	A	172.16.30.$MN" /var/named/$SZN.zone
-	sed -i "17i ns2	IN	A	172.16.30.$MN" /var/named/$SZN.zone
-	sed -i "18i ftp	IN	A	172.16.30.$MN" /var/named/$SZN.zone
+	echo -e "\$TTL 1D\n" > "/var/named/$SZN.zone"
+	sed -i "2i \$ORIGIN $SZN.$ZNE." "/var/named/$SZN.zone"
+	sed -i "3i \	" "/var/named/$SZN.zone"
+	sed -i "4i @	1D	IN	SOA	ns1.$SZN.$ZNE.	dnsadmin.$SZN.$ZNE. (" "/var/named/$SZN.zone"
+	sed -i "5i \	2015013101" "/var/named/$SZN.zone"
+	sed -i "6i \	3H" "/var/named/$SZN.zone"
+	sed -i "7i \	15M" "/var/named/$SZN.zone"
+	sed -i "8i \	1W" "/var/named/$SZN.zone"
+	sed -i "9i \	3H" "/var/named/$SZN.zone"
+	sed -i "10i )" "/var/named/$SZN.zone"
+	sed -i "11i \	" "/var/named/$SZN.zone"
+	sed -i "12i \	IN	NS	ns1.$SZN.$ZNE." "/var/named/$SZN.zone"
+	sed -i "13i \	IN	NS	ns2.$SZN.$ZNE." "/var/named/$SZN.zone"
+	sed -i "14i \	" "/var/named/$SZN.zone"
+	sed -i "15i @	IN	A	172.16.30.$MN" "/var/named/$SZN.zone"
+	sed -i "16i ns1	IN	A	172.16.30.$MN" "/var/named/$SZN.zone"
+	sed -i "17i ns2	IN	A	172.16.30.$MN" "/var/named/$SZN.zone"
+	sed -i "18i ftp	IN	A	172.16.30.$MN" "/var/named/$SZN.zone"
 
 	# Making the 3rd forward zone
-	echo -e "\$TTL 1D\n" > /var/named/$TZN.zone
-	sed -i "2i \$ORIGIN $TZN.$ZNE." /var/named/$TZN.zone
-	sed -i "3i \	" /var/named/$TZN.zone
-	sed -i "4i @	IN	SOA	ns1.$TZN.$ZNE.	dnsadmin.$TZN.$ZNE. (" /var/named/$TZN.zone
-	sed -i "5i \	2015013101" /var/named/$TZN.zone
-	sed -i "6i \	3H" /var/named/$TZN.zone
-	sed -i "7i \	15M" /var/named/$TZN.zone
-	sed -i "8i \	1W" /var/named/$TZN.zone
-	sed -i "9i \	3H" /var/named/$TZN.zone
-	sed -i "10i )" /var/named/$TZN.zone
-	sed -i "11i \	" /var/named/$TZN.zone
-	sed -i "12i \	IN	NS	ns1.$TZN.$ZNE." /var/named/$TZN.zone
-	sed -i "13i \	IN	NS	ns2.$TZN.$ZNE." /var/named/$TZN.zone
-	sed -i "14i \	" /var/named/$TZN.zone
-	sed -i "15i @	IN	A	172.16.30.$MN" /var/named/$TZN.zone
-	sed -i "16i ns1	IN	A	172.16.30.$MN" /var/named/$TZN.zone
-	sed -i "17i ns2	IN	A	172.16.30.$MN" /var/named/$TZN.zone
-	sed -i "18i www	IN	A	172.16.30.$MN" /var/named/$TZN.zone
+	echo -e "\$TTL 1D\n" > "/var/named/$TZN.zone"
+	sed -i "2i \$ORIGIN $TZN.$ZNE." "/var/named/$TZN.zone"
+	sed -i "3i \	" "/var/named/$TZN.zone"
+	sed -i "4i @	IN	SOA	ns1.$TZN.$ZNE.	dnsadmin.$TZN.$ZNE. (" "/var/named/$TZN.zone"
+	sed -i "5i \	2015013101" "/var/named/$TZN.zone"
+	sed -i "6i \	3H" "/var/named/$TZN.zone"
+	sed -i "7i \	15M" "/var/named/$TZN.zone"
+	sed -i "8i \	1W" "/var/named/$TZN.zone"
+	sed -i "9i \	3H" "/var/named/$TZN.zone"
+	sed -i "10i )" "/var/named/$TZN.zone"
+	sed -i "11i \	" "/var/named/$TZN.zone"
+	sed -i "12i \	IN	NS	ns1.$TZN.$ZNE." "/var/named/$TZN.zone"
+	sed -i "13i \	IN	NS	ns2.$TZN.$ZNE." "/var/named/$TZN.zone"
+	sed -i "14i \	" "/var/named/$TZN.zone"
+	sed -i "15i @	IN	A	172.16.30.$MN" "/var/named/$TZN.zone"
+	sed -i "16i ns1	IN	A	172.16.30.$MN" "/var/named/$TZN.zone"
+	sed -i "17i ns2	IN	A	172.16.30.$MN" "/var/named/$TZN.zone"
+	sed -i "18i www	IN	A	172.16.30.$MN" "/var/named/$TZN.zone"
 
 	# Making the reverse zone
 	echo -e "\$TTL 1D\n" > /var/named/16.172.zone
@@ -338,39 +338,39 @@ HTTP() {
 
 	# Making the certificates for the Secure website
 	cd /etc/httpd/tls || exit
-	openssl req -x509 -newkey rsa -days 120 -nodes -keyout key/$ZN$MN.key -out cert/$ZN$MN.cert -subj "/O=$ON/OU=$ZN$MN.$WE/CN=secure.$ZN$MN.$WE"
+	openssl req -x509 -newkey rsa -days 120 -nodes -keyout key/"$ZN$MN".key -out cert/"$ZN$MN".cert -subj "/O=$ON/OU=$ZN$MN.$WE/CN=secure.$ZN$MN.$WE"
 
 	# Making index for localhost
 	echo -e "<Title>Server: HTTP, Apache</Title>\n" > /var/www/html/index.html
 	sed -i "2i <H1> $HN$MN.$WE<H1>" /var/www/html/index.html
 
 	# Making the index file for the 1st page
-	echo -e "<Title>Service: HTTP, Apache</Title>\n" > /var/www/vhosts/www.$FWN.$WE/html/index.html
-	sed -i "2i <H1>Server: www.$FWN.$WE</H1>" /var/www/vhosts/www.$FWN.$WE/html/index.html
-	sed -i "3i <H2>Host: www.$FWN.$WE</H1>" /var/www/vhosts/www.$FWN.$WE/html/index.html
-	sed -i "4i <H2>IP Address: [172.16.30.$MN:80]</H2>" /var/www/vhosts/www.$FWN.$WE/html/index.html
-	sed -i "5i <H1>It works, woohoo!!!!!!</H2>" /var/www/vhosts/www.$FWN.$WE/html/index.html
+	echo -e "<Title>Service: HTTP, Apache</Title>\n" > "/var/www/vhosts/www.$FWN.$WE/html/index.html"
+	sed -i "2i <H1>Server: www.$FWN.$WE</H1>" "/var/www/vhosts/www.$FWN.$WE/html/index.html"
+	sed -i "3i <H2>Host: www.$FWN.$WE</H1>" "/var/www/vhosts/www.$FWN.$WE/html/index.html"
+	sed -i "4i <H2>IP Address: [172.16.30.$MN:80]</H2>" "/var/www/vhosts/www.$FWN.$WE/html/index.html"
+	sed -i "5i <H1>It works, woohoo!!!!!!</H2>" "/var/www/vhosts/www.$FWN.$WE/html/index.html"
 
 	# Making the index file for the 2nd page
-	echo -e "<Title>Service: HTTP, Apache</Title>\n" > /var/www/vhosts/www.$SWN.$WE/html/index.html
-	sed -i "2i <H1>Server: www.$SWN.$WE</H1>" /var/www/vhosts/www.$SWN.$WE/html/index.html
-	sed -i "3i <H2>Host: www.$SWN.$WE</H1>" /var/www/vhosts/www.$SWN.$WE/html/index.html
-	sed -i "4i <H2>IP Address: [172.16.30.$MN:80]</H2>" /var/www/vhosts/www.$SWN.$WE/html/index.html
-	sed -i "5i <H1>This freaking thing works, I sure do know what to do!!!!!!!</H2>" /var/www/vhosts/www.$SWN.$WE/html/index.html
+	echo -e "<Title>Service: HTTP, Apache</Title>\n" > "/var/www/vhosts/www.$SWN.$WE/html/index.html"
+	sed -i "2i <H1>Server: www.$SWN.$WE</H1>" "/var/www/vhosts/www.$SWN.$WE/html/index.html"
+	sed -i "3i <H2>Host: www.$SWN.$WE</H1>" "/var/www/vhosts/www.$SWN.$WE/html/index.html"
+	sed -i "4i <H2>IP Address: [172.16.30.$MN:80]</H2>" "/var/www/vhosts/www.$SWN.$WE/html/index.html"
+	sed -i "5i <H1>This freaking thing works, I sure do know what to do!!!!!!!</H2>" "/var/www/vhosts/www.$SWN.$WE/html/index.html"
 
 	# Making the index file for the 3rd page
-	echo -e "<Title>Service: HTTP, Apache</Title>\n" > /var/www/vhosts/www.$TWN.$WE/html/index.html
-	sed -i "2i <H1>Server: www.$TWN.$WE</H1>" /var/www/vhosts/www.$TWN.$WE/html/index.html
-	sed -i "3i <H2>Host: www.$TWN.$WE</H1>" /var/www/vhosts/www.$TWN.$WE/html/index.html
-	sed -i "4i <H2>IP Address: [172.16.30.$MN:80]</H2>" /var/www/vhosts/www.$TWN.$WE/html/index.html
-	sed -i "5i <H1>This freaking thing works, I sure do know what to do, or do I????????</H2>" /var/www/vhosts/www.$TWN.$WE/html/index.html
+	echo -e "<Title>Service: HTTP, Apache</Title>\n" > "/var/www/vhosts/www.$TWN.$WE/html/index.html"
+	sed -i "2i <H1>Server: www.$TWN.$WE</H1>" "/var/www/vhosts/www.$TWN.$WE/html/index.html"
+	sed -i "3i <H2>Host: www.$TWN.$WE</H1>" "/var/www/vhosts/www.$TWN.$WE/html/index.html"
+	sed -i "4i <H2>IP Address: [172.16.30.$MN:80]</H2>" "/var/www/vhosts/www.$TWN.$WE/html/index.html"
+	sed -i "5i <H1>This freaking thing works, I sure do know what to do, or do I????????</H2>" "/var/www/vhosts/www.$TWN.$WE/html/index.html"
 
 	# Making the index file for secure page
-	echo -e "<Title>Service: HTTPS, Apache</Title>\n" > /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
-	sed -i "2i <H1>Server: $HN.$ZN$MN.$WE</H1>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
-	sed -i "3i <H2>Host: secure.$ZN$MN.$WE</H1>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
-	sed -i "4i <H2>IP Address: [172.16.30.$MN:443]</H2>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
-	sed -i "5i <H1>This one is so secure the whole message is encrypted, or is it?</H2>" /var/www/vhosts/secure.$ZN$MN.$WE/html/index.html
+	echo -e "<Title>Service: HTTPS, Apache</Title>\n" > "/var/www/vhosts/secure.$ZN$MN.$WE/html/index.html"
+	sed -i "2i <H1>Server: $HN.$ZN$MN.$WE</H1>" "/var/www/vhosts/secure.$ZN$MN.$WE/html/index.html"
+	sed -i "3i <H2>Host: secure.$ZN$MN.$WE</H1>" "/var/www/vhosts/secure.$ZN$MN.$WE/html/index.html"
+	sed -i "4i <H2>IP Address: [172.16.30.$MN:443]</H2>" "/var/www/vhosts/secure.$ZN$MN.$WE/html/index.html"
+	sed -i "5i <H1>This one is so secure the whole message is encrypted, or is it?</H2>" "/var/www/vhosts/secure.$ZN$MN.$WE/html/index.html"
 
 	# Making HTTP config file
 	echo -e "ServerName		$HN$MN.$WE\n" > /etc/httpd/conf/httpd.conf
@@ -468,7 +468,7 @@ POSTFIX() {
 read -rp "What Package Manager does your Distro use? " PKTMGR
 read -rp "Please enter your Magic Number: " MN
 read -rp "Please enter your HostName: " HN
-read -rp "Please enter your HostName Extension: " HNE
+#read -rp "Please enter your HostName Extension: " HNE
 
 funcRun() {
 	# Asking the user to choose a function to run
