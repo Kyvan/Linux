@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright 2017 jstpcs <jstpcs at protonmail dot com>
 # Copyright 2017 moviuro <moviuro at gmail dot com>
