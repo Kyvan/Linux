@@ -62,15 +62,15 @@ FTP() {
 	sed -i "27s/#//" /etc/vsftpd/vsftpd.conf
 
 	# Making an Upload and Download directory with appropriate permissions
-	mkdir -rp /var/ftp/$FTPU
-	chmod 777 /var/ftp/$FTPU
-	mkdir -rp /var/ftp/$FTPD
-	chmod 555 /var/ftp/$FTPD
+	mkdir -p /var/ftp/"$FTPU"
+	chmod 777 /var/ftp/"$FTPU"
+	mkdir -p /var/ftp/"$FTPD"
+	chmod 555 /var/ftp/"$FTPD"
 
 	# Making a file for testing FTP
-	echo -e "Kyvan\n" > /var/ftp/$FTPD/readme.ftp
-	sed -i "2i emam0009" /var/ftp/$FTPD/readme.ftp
-	sed -i "3i Testing to see if user can download from DOWNLOAD folder in FTP directory" /var/ftp/$FTPD/readme.ftp
+	echo -e "Kyvan\n" > "/var/ftp/$FTPD/readme.ftp"
+	sed -i "2i emam0009" "/var/ftp/$FTPD/readme.ftp"
+	sed -i "3i Testing to see if user can download from DOWNLOAD folder in FTP directory" "/var/ftp/$FTPD/readme.ftp"
 
 	# creating the alias interface for ftp
 	echo -e "DEVICE=eth3:0\n" > /etc/sysconfig/network-scripts/"ifcfg-eth3:0"
@@ -327,7 +327,7 @@ HTTP() {
 
 	# Making the document root for the sites
 	cd /var/www/vhosts || exit
-	mkdir -rp www.$FWN.$WE/html www.$FWN.$WE/log www.$SWN.$WE/html www.$SWN.$WE/log www.$TWN.$WE/html www.$TWN.$WE/log secure.$ZN$MN.$WE/html secure.$ZN$MN.$WE/log
+	mkdir -rp "www.$FWN.$WE/html" "www.$FWN.$WE/log" "www.$SWN.$WE/html" "www.$SWN.$WE/log" "www.$TWN.$WE/html" "www.$TWN.$WE/log" "secure.$ZN$MN.$WE/html" "secure.$ZN$MN.$WE/log"
 
 	# Making the directories for RSA certifications
 	mkdir -rp /etc/httpd/tls/cert /etc/httpd/tls/key
@@ -472,46 +472,51 @@ read -rp "Please enter your HostName Extension: " HNE
 
 funcRun() {
 	# Asking the user to choose a function to run
-	read -rp "Which function do you want to run (1- fwRules, 2- intSetup, 3- FTP, 4- SSH. 5- DNS, 6- IMAP, 7- HTTP, 8- POSTFIX, 9- All the scripts, [Press any other key to exit the script]) > " FR
+	echo "Which function do you want to run:"
+	echo "1: fwRules"
+	echo "2: intSetup"
+	echo "3: FTP"
+	echo "4: SSH"
+	echo "5: DNS"
+	echo "6: IMAP"
+	echo "7: HTTP"
+	echo "8: POSTFIX"
+	echo "9: All the scripts"
+	read -r FR
 
 	# Checking to see which function to run
-	if [ "$FR" = 1 ] ; then
-		fwRules
-		funcRun
-	elif [ "$FR" = 2 ]	; then
-		intSetup
-		funcRun
-	elif [ "$FR" = 3 ] ; then
-		FTP
-		funcRun
-	elif [ "$FR" = 4 ] ; then
-		SSH
-		funcRun
-	elif [ "$FR" = 5 ] ; then
-		DNS
-		funcRun
-	elif [ "$FR" = 6 ] ; then
-		IMAP
-		funcRun
-	elif [ "$FR" = 7 ] ; then
-		HTTP
-		funcRun
-	elif [ "$FR" = 8 ] ; then
-		POSTFIX
-		funcRun
-	elif [ "$FR" = 9 ] ; then
-		fwRules
-		intSetup
-		FTP
-		SSH
-		DNS
-		IMAP
-		HTTP
-		POSTFIX
-		funcRun
-	else
-		exit
-	fi
+	case $FR in #if [ "$FR" = 1 ] ; then
+		1)
+			fwRules && funcRun
+		;;
+		2)	#elif [ "$FR" = 2 ]	; then
+			intSetup && funcRun
+		;;
+		3) #elif [ "$FR" = 3 ] ; then
+			FTP && funcRun
+		;;
+		4) #elif [ "$FR" = 4 ] ; then
+			SSH && funcRun
+		;;
+		5) #elif [ "$FR" = 5 ] ; then
+			DNS && funcRun
+		;;
+		6) #elif [ "$FR" = 6 ] ; then
+			IMAP && funcRun
+		;;
+		7) #elif [ "$FR" = 7 ] ; then
+			HTTP && funcRun
+		;;
+		8) #elif [ "$FR" = 8 ] ; then
+			POSTFIX && funcRun
+		;;
+		9) #elif [ "$FR" = 9 ] ; then
+			fwRules && intSetup && FTP && SSH && DNS && IMAP && HTTP && POSTFIX && funcRun
+		;;
+		*) #else
+			echo "Nothing left to do, bye!!"
+		;;
+	esac #fi
 }
 
 funcRun
