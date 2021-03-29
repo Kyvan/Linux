@@ -468,55 +468,50 @@ POSTFIX() {
 read -rp "What Package Manager does your Distro use? " PKTMGR
 read -rp "Please enter your Magic Number: " MN
 read -rp "Please enter your HostName: " HN
-#read -rp "Please enter your HostName Extension: " HNE
 
-funcRun() {
-	# Asking the user to choose a function to run
-	echo "Which function do you want to run:"
-	echo "1: fwRules"
-	echo "2: intSetup"
-	echo "3: FTP"
-	echo "4: SSH"
-	echo "5: DNS"
-	echo "6: IMAP"
-	echo "7: HTTP"
-	echo "8: POSTFIX"
-	echo "9: All the scripts"
-	read -r FR
+# Asking the user to choose a function to run
+echo "Which function do you want to run:"
+echo "1: fwRules"
+echo "2: intSetup"
+echo "3: FTP"
+echo "4: SSH"
+echo "5: DNS"
+echo "6: IMAP"
+echo "7: HTTP"
+echo "8: POSTFIX"
+echo "9: All the scripts"
+read -r FR
 
-	# Checking to see which function to run
-	case $FR in #if [ "$FR" = 1 ] ; then
-		1)
-			fwRules && funcRun
+# Checking to see which function to run
+case $FR in
+	1)
+		fwRules
+	;;
+	2)
+		intSetup
+	;;
+	3)
+		FTP
+	;;
+	4)
+		SSH
+	;;
+	5)
+		DNS
+	;;
+	6)
+		IMAP
+	;;
+	7)
+		HTTP
+	;;
+	8)
+		POSTFIX
+	;;
+	9)
+		fwRules && intSetup && FTP && SSH && DNS && IMAP && HTTP && POSTFIX
+	;;
+	*)
+		echo "Nothing left to do, bye!!"
 		;;
-		2)	#elif [ "$FR" = 2 ]	; then
-			intSetup && funcRun
-		;;
-		3) #elif [ "$FR" = 3 ] ; then
-			FTP && funcRun
-		;;
-		4) #elif [ "$FR" = 4 ] ; then
-			SSH && funcRun
-		;;
-		5) #elif [ "$FR" = 5 ] ; then
-			DNS && funcRun
-		;;
-		6) #elif [ "$FR" = 6 ] ; then
-			IMAP && funcRun
-		;;
-		7) #elif [ "$FR" = 7 ] ; then
-			HTTP && funcRun
-		;;
-		8) #elif [ "$FR" = 8 ] ; then
-			POSTFIX && funcRun
-		;;
-		9) #elif [ "$FR" = 9 ] ; then
-			fwRules && intSetup && FTP && SSH && DNS && IMAP && HTTP && POSTFIX && funcRun
-		;;
-		*) #else
-			echo "Nothing left to do, bye!!"
-		;;
-	esac #fi
-}
-
-funcRun
+esac
