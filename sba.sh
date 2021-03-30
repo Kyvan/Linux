@@ -470,45 +470,44 @@ read -rp "Please enter your Magic Number: " MN
 read -rp "Please enter your HostName: " HN
 
 # Asking the user to choose a function to run
-echo "Which function do you want to run:"
-echo "1: fwRules"
-echo "2: intSetup"
-echo "3: FTP"
-echo "4: SSH"
-echo "5: DNS"
-echo "6: IMAP"
-echo "7: HTTP"
-echo "8: POSTFIX"
-echo "9: All the scripts"
-read -r FR
+echo "fwRules"
+echo "intSetup"
+echo "FTP"
+echo "SSH"
+echo "DNS"
+echo "IMAP"
+echo "HTTP"
+echo "POSTFIX"
+echo "All"
+read -rp "Which of the above options are you looking to use? $(echo -e '\n> ')" FR
 
 # Checking to see which function to run
-case $FR in
-	1)
+case ${FR,,} in
+	fwrules)
 		fwRules
 	;;
-	2)
+	intsetup)
 		intSetup
 	;;
-	3)
+	ftp)
 		FTP
 	;;
-	4)
+	ssh)
 		SSH
 	;;
-	5)
+	dns)
 		DNS
 	;;
-	6)
+	imap)
 		IMAP
 	;;
-	7)
+	http)
 		HTTP
 	;;
-	8)
+	postfix)
 		POSTFIX
 	;;
-	9)
+	all)
 		fwRules && intSetup && FTP && SSH && DNS && IMAP && HTTP && POSTFIX
 	;;
 	*)
