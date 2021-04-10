@@ -1,7 +1,6 @@
 #!/bin/bash -u
 
-menu2Option=' '
-menu3Option=' '
+number="^[0-9]+$"
 
 function add() {
     echo -e "\e[34mresults is: \e[1m$(($1 + $2))"
@@ -15,15 +14,38 @@ function menu1() {
     echo -e "   \e[1mMenu 1"
     echo -e "\e[0mC) Calculation"
     echo -e "\e[0mX) Exit"
-    read -r menu1Option
-    menuChecker $menu1Option
+    read -rp "What option would you like to choose?$(echo -e '\n> ')" menu1Option
+    echo "You chose: $menu1Option"
+    sleep 3
+    clear
+    case ${menu1Option,,} in
+        c)
+            menu2
+            ;;
+        x)
+            exit 
+            ;;
+        *)
+            echo "Invalid input. Please enter option from menu"
+            menu2
+            ;;
+        esac
 }
 
 function menu2() {
     echo -e "   \e[1mMenu 2"
     echo -e "\e[0mX) Exit"
-    read -rp "What's the first number?$(echo -e '\n> ')" menu2Option
-    menuChecker $menu2Option
+    read -rp "What's the first number?$(echo -e '\n> ' )" menu2Option
+    echo "You chose: $menu2Option"
+    sleep 3
+    clear
+    if [[ ${menu2Option^^} == "X" ]] ; then
+            exit
+    elif ! [[ "$menu2Option" =~ $number ]] ; then
+        echo "Invalid input. Please enter option from menu" ; menu2
+    else
+        menu3
+    fi
 }
 
 function menu3() {
@@ -31,82 +53,40 @@ function menu3() {
     echo -e "\e[0m+) Add"
     echo -e "\e[0m-) Subtract"
     echo -e "\e[0mX) Exit"
-    read -r menu3Option
-    menuChecker $menu3Option
-}
-
-function menuChecker() {
-    case $1 in
-        c | C)
-            if [[ "$1" == "$menu2Option" ]] ; then
-                sleep 3
-                clear
-                echo "Wrong option, please choose again"
-                menu2
-            elif [[ "$1" == "$menu3Option" ]] ; then
-                sleep 3
-                clear
-                echo "Wrong option, please choose again"
-                menu3
-            else
-                sleep 3
-                clear
-                menu2
-            fi
-            ;;
+    read -rp "What option would you like to choose?$(echo -e '\n> ')" menu3Option
+    echo "You chose: $menu3Option"
+    sleep 3
+    clear
+    case $menu3Option in
         x | X)
-            sleep 3
-            clear
             exit
             ;;
         + | -)
-            sleep 3
-            clear
-            read -rp "What's the second number$(echo -e '\n> ')" secondNumber
-            while [[ ! "$secondNumber" == [0-9]* ]] ; do
-                if [[ "{$secondNumber,,}" == "x" ]] ; then
-                    exit
-                fi
-                sleep 3
-                clear
-                echo "Wrong option, please choose again"
-                echo -e "\e[0mX) Exit"
-                read -rp "What's the second number?$(echo -e '\n> ')" secondNumber
-            done
-            sleep 3
-            clear
-            if [[ "$1" == "+" ]] ; then
-                add $menu2Option $secondNumber
-            else
-                subtract $menu2Option $secondNumber
-            fi    
-        ;;
-        [[:digit:]]*)
-            sleep 3
-            clear
-            if [[ $1 == $menu1Option ]] ; then
-                echo "Wrong option, please choose again"
-                menu1
-            elif [[ "$1" == "$menu3Option" ]] ; then
-                echo "Wrong option, please choose again"
-                menu3
-            else
-                menu3
-            fi
-        ;;
+            menu4
+            ;;
         *)
-            sleep 3
-            clear
-            echo "Invalid input. Please enter option from menu"
-            if [[ "$1" == "$menu1Option" ]] ; then 
-                menu1
-            elif [[ "$1" == "$menu2Option" ]] ; then
-                menu2
-            else
-                menu3
-                fi
-        ;;
+            echo "Invalid input. Please enter option from menu" ; menu3
     esac
+}
+
+function menu4() {
+    echo -e "   \e[1mMenu 4"
+    echo -e "\e[0mX) Exit"
+    read -rp "What's the second number?$(echo -e '\n> ' )" menu4Option
+    echo "You chose: $menu4Option"
+    sleep 3
+    clear
+    if [[ ${menu2Option,,} == "x" ]] ; then
+            exit
+    elif ! [[ "$menu2Option" =~ $number ]] ; then
+        echo "Invalid input. Please enter option from menu" ; menu4
+    else
+        if [[ "$menu3Option" == "+" ]] ; then
+            add "$menu2Option" "$menu4Option"
+        else
+            subtract "$menu2Option" "$menu4Option"
+        fi
+    fi
 }
 
 if [[ $# -eq 3 ]] ; then
