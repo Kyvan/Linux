@@ -1,15 +1,17 @@
 #!/bin/bash -u
 
 function add() {
-    echo -e "\e[34mresults is: \e[1m$(($1 + $2))"
+    sum=$(awk "BEGIN {print $1 + $2; exit}")
+    echo -e "\e[34mresults is: \e[1m$sum"
 }
 
 function subtract() {
-    echo -e "\e[31mresults is: \e[1m$(($1 - $2))"
+    sum=$(awk "BEGIN {print $1 - $2; exit}")
+    echo -e "\e[31mresults is: \e[1m$sum"
 }
 
 function numberChecker() {
-    echo "$1" | grep -E ^\-?[0-9]+$
+    echo "$1" | grep -E "^\-?[0-9]+\.?[0-9]*$"
 }
 
 function menu1() {
