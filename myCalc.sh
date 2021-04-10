@@ -10,6 +10,10 @@ function subtract() {
     echo -e "\e[31mresults is: \e[1m$(($1 - $2))"
 }
 
+function numberChecker() {
+    echo "$1" | grep -E ^\-?[0-9]+$
+}
+
 function menu1() {
     echo -e "   \e[1mMenu 1"
     echo -e "\e[0mC) Calculation"
@@ -41,10 +45,10 @@ function menu2() {
     clear
     if [[ ${menu2Option^^} == "X" ]] ; then
             exit
-    elif ! [[ "$menu2Option" =~ $number ]] ; then
-        echo "Invalid input. Please enter option from menu" ; menu2
-    else
+    elif  [[ "$(numberChecker $menu2Option)" != '' ]] ; then
         menu3
+    else
+        echo "Invalid input. Please enter option from menu" ; menu2
     fi
 }
 
@@ -78,14 +82,14 @@ function menu4() {
     clear
     if [[ ${menu2Option,,} == "x" ]] ; then
             exit
-    elif ! [[ "$menu2Option" =~ $number ]] ; then
-        echo "Invalid input. Please enter option from menu" ; menu4
-    else
+    elif [[ "$(numberChecker $menu4Option)" != '' ]] ; then
         if [[ "$menu3Option" == "+" ]] ; then
             add "$menu2Option" "$menu4Option"
         else
             subtract "$menu2Option" "$menu4Option"
         fi
+    else
+        echo "Invalid input. Please enter option from menu" ; menu4
     fi
 }
 
