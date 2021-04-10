@@ -1,7 +1,5 @@
 #!/bin/bash -u
 
-number="^[0-9]+$"
-
 function add() {
     echo -e "\e[34mresults is: \e[1m$(($1 + $2))"
 }
@@ -95,21 +93,15 @@ function menu4() {
 
 if [[ $# -eq 3 ]] ; then
     if [[ $2 == "+" ]] ; then
-        clear
-        add $1 $3
+        clear ; add $1 $3
     elif [[ $2 == "-" ]] ; then
-        clear
-        subtract $1 $3
+        clear ; subtract $1 $3
     else
-        clear
-        echo "Wrong option provided"
-        exit 1
+        clear ; echo "Wrong option provided" ; exit 1
     fi
 elif [[ $# -eq 0 ]] ; then
-    clear
-    menu1
+    clear ; menu1
 else
-    clear
-    echo "You need either no options or three"
+    clear ; echo "You need either no options or three"
     echo "Please run the script again with the correct number of options"
 fi
