@@ -2,12 +2,12 @@
 
 function add() {
     sum=$(awk "BEGIN {print $1 + $2; exit}")
-    echo -e "\e[34mresults is: \e[1m$sum"
+    echo -e "\e[34mresults is: \e[0m$sum"
 }
 
 function subtract() {
     sum=$(awk "BEGIN {print $1 - $2; exit}")
-    echo -e "\e[31mresults is: \e[1m$sum"
+    echo -e "\e[31mresults is: \e[0m$sum"
 }
 
 function numberChecker() {
