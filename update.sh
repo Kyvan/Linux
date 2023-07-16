@@ -9,48 +9,42 @@ NC='\033[0m' # No Color
 
 function debian_update() {
     echo -e "${blue}Checking updates...${NC}"
-    sudo apt update
+    sudo apt "${1}"
     echo -e "${green}Checking for updates done...${NC}"
     echo -e "${brown}Installing updates (if applicable)...${NC}"
-    sudo apt upgrade
+    sudo apt "${2}"
     echo -e "${green}Installing updates done...${NC}"
 }
 
-function rhel_update() {
+function rhel() {
     echo -e "${blue}Checking and installing updates...${NC}"
-    sudo dnf update
+    sudo dnf "${1}" "${2}" 
     echo -e "${green}Checking and installing updates done...${NC}"
 }
 
-function suse_update() {
+function suse() {
     echo -e "${blue}Checking and installing updates...${NC}"
-    sudo zypper update
+    sudo zypper "${1}" "${2}"
     echo -e "${green}Checking and installing updates done...${NC}"
 }
 
 function debian_install() {
+    echo -e "${blue}Installing new packages...${NC}"
     sudo apt "${state}" "${package}"
-}
-
-function rhel_install() {
-    sudo dnf "${state}" "${package}"
-}
-
-function suse_install() {
-    sudo zypper "${state}" "${package}"
+    echo -e "${green}Installing new packages done...${NC}"
 }
 
 function distro_check() {
     # If statement to check which distro is used
     if grep -iE '(debian|ubuntu)' "${version}" > /dev/null; then
-        debian_update
+        debian_update "${1}" "${2}"
     elif grep -iE '(red had)' "${version}" > /dev/null ; then
-        rhel_update
+        rhel "${1}"
     elif grep -iE '(suse)' "${version}" > /dev/null ; then
-        suse_update
+        suse "${1}"
     else
         echo "Why you being difficult?"
-        echo "Do your shit manually"
+        echo "Do your shit manually."
     fi
 }
 
@@ -64,16 +58,17 @@ function input_check() {
         package="${1}"
         debian_install "${state}" "${package}"
     else
-        echo "One of the arguments passed needs to be \"install\" or \"remove\""
+        echo "ERROR: One of the arguments passed needs to be \"install\" or \"remove\"."
         exit 1
     fi
 }
 
 if [[ $# -eq 0 ]] ; then
-    distro_check
+    distro_check update upgrade
 elif [[ $# -eq 2 ]] ; then
     input_check "${1}" "${2}"
 else
-    echo "You need either 0 arguments, or 2 and more"
+    echo "ERROR: You need either zero or two option for the script."
+    echo "USAGE: $0 [argument]"
     exit 1
 fi
