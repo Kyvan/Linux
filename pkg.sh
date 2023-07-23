@@ -63,6 +63,8 @@ function input_check() {
     fi
 }
 
+
+
 if [[ $# -eq 0 ]] ; then
     distro_check update upgrade
 elif [[ $# -eq 2 ]] ; then
@@ -72,3 +74,23 @@ else
     echo "USAGE: $0 [argument]"
     exit 1
 fi
+
+# checking for Flatpak
+function flatpakCheck() {
+    read -rp "would you like to check for flatpack udpates as well? (y/yes/no/n)" flatAnswer
+    case "${flatAnswer,,}" in
+        y | yes)
+            flatpak update
+            ;;
+        n | no)
+            exit 0
+            ;;
+        *)
+            echo "Please answer with either \"Y\", \"YES\", \"NO\",  and \"N\"!!!!!!"
+            flatpakCheck
+            ;;
+    esac
+}
+
+#read -rp "would you like to check for flatpack udpates as well? (y/n)" flatAnswer
+flatpakCheck
