@@ -77,9 +77,9 @@ fi
 
 # checking for Flatpak
 function flatpakCheck() {
-    read -rp "would you like to check for flatpack udpates as well? (y/yes/no/n)" flatAnswer
+    read -rp "would you like to check for flatpack udpates? (YES/Y/no/n) -- Default is YES" flatAnswer
     case "${flatAnswer,,}" in
-        y | yes)
+        y | yes | '')
             flatpak update
             ;;
         n | no)
