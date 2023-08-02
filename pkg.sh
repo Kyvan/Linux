@@ -46,7 +46,7 @@ function input_check() {
 function distro_check() {
     # If statement to check which distro is used
     if grep -iE '(debian|ubuntu)' "${version}" > /dev/null; then
-        if sudo apt list --installed nala | grep -i installed ; then
+        if sudo apt list --installed nala 2> /dev/null | grep -i installed > /dev/null ; then
             pkg="nala"
         else
             echo -e "${cyan}Installing nala since it is better than apt${NC}"
