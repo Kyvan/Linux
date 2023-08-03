@@ -2,11 +2,19 @@
 
 # variables neede dof the script to work
 version=/proc/version
+red='\033[1;31m'
 green='\033[1;32m'
 brown='\033[1;33m'
-cyan='\033[1;36m'
 blue='\033[1;34m'
+cyan='\033[1;36m'
 NC='\033[0m' # No Color
+
+function pkg_autoremove() {
+    echo -e "${blue}Removing unused packages...${NC}"
+    sudo "${pkg}" "${1}"
+    echo -e "${green}Removing unused packages done...${NC}"
+    exit 0
+}
 
 function pkg_update() {
     echo -e "${blue}Checking and installing updates...${NC}"
@@ -24,23 +32,22 @@ function pkg_update_deb() {
 
 function pkg_install() {
     echo -e "${blue}Installing new packages...${NC}"
-    sudo "${pkg}" "${1}" "${2}"
+    sudo "${pkg}" "${@}"
     echo -e "${green}Installing new packages done...${NC}"
+    exit 0
 }
 
 function input_check() {
-    if [[ "${1}" == "install" || "${1}" == "remove" ]] ; then
-        state="${1}"
-        package="${2}"
-        pkg_install "${state}" "${package}"
-    elif [[ "${2}" == "install" || "${2}" == "remove" ]] ; then
-        state="${2}"
-        package="${1}"
-        pkg_install "${state}" "${package}"
-    else
-        echo "ERROR: One of the arguments passed needs to be \"install\" or \"remove\"."
-        exit 1
-    fi
+    case "${1,,}" in
+        autoremove)
+            pkg_autoremove "${1}"
+            ;;
+        install | remove)
+            pkg_install "${@}"
+            ;;
+        *)
+            echo -e "${red}ERROR: First argument needs to be \"autoremove\", \"install\", or \"remove\"!!!${NC}"
+    esac
 }
 
 function distro_check() {
@@ -63,6 +70,32 @@ function distro_check() {
     fi
 }
 
+distro_check
+
+if [[ $# -eq 0 ]] ; then
+    if grep -iE '(debian|ubuntu)' "${version}" > /dev/null ; then
+        pkg_update_deb
+    else
+        pkg_update
+    fi
+elif [[ $# -eq 1 ]] ; then
+    input_check "${1}"
+elif [[ $# -ge 2 ]] ; then
+    input_check "${@}"
+    ## Loop to go through all arguments and assign it to a different variable
+    ## Thanks ChatGPT
+    # i=1
+    # for arg in "$@" ; do
+    #     declare "arg${i}"="${arg}"
+    #     echo "${i} ${arg}"
+    #     ((i++))
+    # done
+else
+    echo "ERROR: You need either zero or two option for the script."
+    echo "USAGE: $0 [argument]"
+    exit 1
+fi
+
 # checking for Flatpak
 function flatpakCheck() {
     echo -e "${blue}would you like to check for flatpack udpates? (YES/Y/no/n)${NC} -- ${cyan}Default is YES${NC}"
@@ -80,21 +113,5 @@ function flatpakCheck() {
             ;;
     esac
 }
-
-distro_check
-
-if [[ $# -eq 0 ]] ; then
-    if grep -iE '(debian|ubuntu)' "${version}" > /dev/null ; then
-        pkg_update_deb
-    else
-        pkg_update
-    fi
-elif [[ $# -eq 2 ]] ; then
-    input_check "${1}" "${2}"
-else
-    echo "ERROR: You need either zero or two option for the script."
-    echo "USAGE: $0 [argument]"
-    exit 1
-fi
 
 flatpakCheck
