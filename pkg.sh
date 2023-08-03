@@ -2,11 +2,11 @@
 
 # variables neede dof the script to work
 version=/proc/version
-red='\033[1;31m'
-green='\033[1;32m'
-brown='\033[1;33m'
-blue='\033[1;34m'
-cyan='\033[1;36m'
+red='\033[1;91m'
+green='\033[1;92m'
+yellow='\033[1;93m'
+blue='\033[1;94m'
+cyan='\033[1;96m'
 NC='\033[0m' # No Color
 
 function pkg_autoremove() {
@@ -25,7 +25,7 @@ function pkg_update() {
 function pkg_update_deb() {
     echo -e "${blue}Checking for updates...${NC}"
     sudo "${pkg}" update
-    echo -e "${brown}installing updates...${NC}"
+    echo -e "${yellow}installing updates...${NC}"
     sudo "${pkg}" upgrade
     echo -e "${green}installing updates done...${NC}"
 }
@@ -47,6 +47,7 @@ function input_check() {
             ;;
         *)
             echo -e "${red}ERROR: First argument needs to be \"autoremove\", \"install\", or \"remove\"!!!${NC}"
+            exit 2
     esac
 }
 
