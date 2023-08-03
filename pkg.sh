@@ -4,7 +4,7 @@
 version=/proc/version
 red='\033[1;91m'
 green='\033[1;92m'
-yellow='\033[1;93m'
+# yellow='\033[1;93m'
 blue='\033[1;94m'
 cyan='\033[1;96m'
 NC='\033[0m' # No Color
@@ -22,13 +22,14 @@ function pkg_update() {
     echo -e "${green}Checking and installing updates done...${NC}"
 }
 
-function pkg_update_deb() {
-    echo -e "${blue}Checking for updates...${NC}"
-    sudo "${pkg}" update
-    echo -e "${yellow}installing updates...${NC}"
-    sudo "${pkg}" upgrade
-    echo -e "${green}installing updates done...${NC}"
-}
+## Not needed since Nala takes care of update and upgrades
+# function pkg_update_deb() {
+#     echo -e "${blue}Checking for updates...${NC}"
+#     sudo "${pkg}" update
+#     echo -e "${yellow}installing updates...${NC}"
+#     sudo "${pkg}" upgrade
+#     echo -e "${green}installing updates done...${NC}"
+# }
 
 function pkg_install() {
     echo -e "${blue}Installing new packages...${NC}"
@@ -74,11 +75,7 @@ function distro_check() {
 distro_check
 
 if [[ $# -eq 0 ]] ; then
-    if grep -iE '(debian|ubuntu)' "${version}" > /dev/null ; then
-        pkg_update_deb
-    else
-        pkg_update
-    fi
+    pkg_update
 elif [[ $# -eq 1 ]] ; then
     input_check "${1}"
 elif [[ $# -ge 2 ]] ; then
