@@ -4,17 +4,17 @@
 version=/proc/version
 red='\033[1;91m'
 green='\033[1;92m'
-# yellow='\033[1;93m'
+yellow='\033[1;93m'
 blue='\033[1;94m'
 cyan='\033[1;96m'
 NC='\033[0m' # No Color
 
-function pkg_autoremove() {
-    echo -e "${blue}Removing unused packages...${NC}"
-    sudo "${pkg}" "${1}"
-    echo -e "${green}Removing unused packages done...${NC}"
-    exit 0
-}
+# function pkg_autoremove() {
+#     echo -e "${blue}Removing unused packages...${NC}"
+#     sudo "${pkg}" "${1}"
+#     echo -e "${green}Removing unused packages done...${NC}"
+#     exit 0
+# }
 
 function pkg_update() {
     echo -e "${blue}Checking and installing updates...${NC}"
@@ -22,16 +22,15 @@ function pkg_update() {
     echo -e "${green}Checking and installing updates done...${NC}"
 }
 
-## Not needed since Nala takes care of update and upgrades
-# function pkg_update_deb() {
-#     echo -e "${blue}Checking for updates...${NC}"
-#     sudo "${pkg}" update
-#     echo -e "${yellow}installing updates...${NC}"
-#     sudo "${pkg}" upgrade
-#     echo -e "${green}installing updates done...${NC}"
-# }
+function pkg_update_deb() {
+    echo -e "${blue}Checking for updates...${NC}"
+    sudo "${pkg}" update
+    echo -e "${yellow}installing updates...${NC}"
+    sudo "${pkg}" upgrade
+    echo -e "${green}installing updates done...${NC}"
+}
 
-function pkg_install() {
+function pkg_manager() {
     echo -e "${blue}Installing new packages...${NC}"
     sudo "${pkg}" "${@}"
     echo -e "${green}Installing new packages done...${NC}"
@@ -40,11 +39,8 @@ function pkg_install() {
 
 function input_check() {
     case "${1,,}" in
-        autoremove)
-            pkg_autoremove "${1}"
-            ;;
-        install | remove)
-            pkg_install "${@}"
+        autoremove | install | remove)
+            pkg_manager "${@}"
             ;;
         *)
             echo -e "${red}ERROR: First argument needs to be \"autoremove\", \"install\", or \"remove\"!!!${NC}"
@@ -75,11 +71,15 @@ function distro_check() {
 distro_check
 
 if [[ $# -eq 0 ]] ; then
-    pkg_update
-elif [[ $# -eq 1 ]] ; then
-    input_check "${1}"
-elif [[ $# -ge 2 ]] ; then
+    if grep -iE '(debian|ubuntu)' "${version}" > /dev/null; then
+        pkg_update_deb
+    else
+        pkg_update
+    fi
+elif [[ $# -ge 1 ]] ; then
     input_check "${@}"
+# elif [[ $# -ge 2 ]] ; then
+#     input_check "${@}"
     ## Loop to go through all arguments and assign it to a different variable
     ## Thanks ChatGPT
     # i=1
