@@ -39,8 +39,11 @@ function pkg_manager() {
 
 function input_check() {
     case "${1,,}" in
-        autoremove | install | remove)
+        install | remove)
             pkg_manager "${@}"
+            ;;
+        autoremove)
+            pkg_manager "${1}"
             ;;
         *)
             echo -e "${red}ERROR: First argument needs to be \"autoremove\", \"install\", or \"remove\"!!!${NC}"
