@@ -96,12 +96,13 @@ if [[ $# -eq 0 ]] ; then
 elif [[ $# -eq 1 ]] ; then
     package_check $(echo "${1}" | grep -Eoi '(rpm|deb)$')
     distpkg_manager "${1}"
-elif [[ $# -ge 2 ]] ; then
-    input_check "${@}"
+# elif [[ $# -ge 2 ]] ; then
 else
-    echo "ERROR: You need either zero or two option for the script."
-    echo "USAGE: $0 [argument]"
-    exit 1
+    input_check "${@}"
+# else
+#     echo "ERROR: You need either zero or two option for the script."
+#     echo "USAGE: $0 [argument]"
+#     exit 1
 fi
 
 # checking for Flatpak
