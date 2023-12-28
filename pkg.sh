@@ -9,13 +9,6 @@ blue='\033[1;94m'
 cyan='\033[1;96m'
 NC='\033[0m' # No Color
 
-# function pkg_autoremove() {
-#     echo -e "${blue}Removing unused packages...${NC}"
-#     sudo "${pkg}" "${1}"
-#     echo -e "${green}Removing unused packages done...${NC}"
-#     exit 0
-# }
-
 function pkg_update() {
     echo -e "${blue}Checking and installing updates...${NC}"
     sudo "${pkg}" update
@@ -37,6 +30,13 @@ function pkg_manager() {
     exit 0
 }
 
+function distpkg_manager() {
+    echo -e "${blue}Installing new packages...${NC}"
+    sudo "${distpkg}" --install "${@}"
+    echo -e "${green}Installing new packages done...${NC}"
+    exit 0
+}
+
 function input_check() {
     case "${1,,}" in
         install | remove)
@@ -51,9 +51,23 @@ function input_check() {
     esac
 }
 
+function package_check() {
+    case "${1,,}" in
+        rpm)
+            distpkg="rpm"
+            ;;
+        deb)
+            distpkg="dpkg"
+            ;;
+        *)
+            echo -e "${red}ERROR: For single arguemnts, you need an RPM or a DEB package!!!${NC}"
+            exit 2
+    esac
+}
+
 function distro_check() {
     # If statement to check which distro is used
-    if grep -iE '(debian|ubuntu)' "${version}" > /dev/null; then
+    if grep -iE '(debian|ubuntu)' "${version}" > /dev/null ; then
         if sudo apt list --installed nala 2> /dev/null | grep -i installed > /dev/null ; then
             pkg="nala"
         else
@@ -74,23 +88,16 @@ function distro_check() {
 distro_check
 
 if [[ $# -eq 0 ]] ; then
-    if grep -iE '(debian|ubuntu)' "${version}" > /dev/null; then
+    if grep -iE '(debian|ubuntu)' "${version}" > /dev/null ; then
         pkg_update_deb
     else
         pkg_update
     fi
-elif [[ $# -ge 1 ]] ; then
+elif [[ $# -eq 1 ]] ; then
+    package_check $(echo "${1}" | grep -Eoi '(rpm|deb)$')
+    distpkg_manager "${1}"
+elif [[ $# -ge 2 ]] ; then
     input_check "${@}"
-# elif [[ $# -ge 2 ]] ; then
-#     input_check "${@}"
-    ## Loop to go through all arguments and assign it to a different variable
-    ## Thanks ChatGPT
-    # i=1
-    # for arg in "$@" ; do
-    #     declare "arg${i}"="${arg}"
-    #     echo "${i} ${arg}"
-    #     ((i++))
-    # done
 else
     echo "ERROR: You need either zero or two option for the script."
     echo "USAGE: $0 [argument]"
