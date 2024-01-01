@@ -32,18 +32,22 @@ function pkg_manager() {
 
 function distpkg_manager() {
     echo -e "${blue}Installing new packages...${NC}"
-    sudo "${distpkg}" --install "${@}"
+    sudo "${distpkg}" "${@}"
     echo -e "${green}Installing new packages done...${NC}"
     exit 0
 }
 
 function input_check() {
-    case "${1,,}" in
+    case "${1}" in
         install | remove)
             pkg_manager "${@}"
             ;;
         autoremove)
             pkg_manager "${1}"
+            ;;
+        --install | --remove)
+            package_check $(echo "${2}" | grep -Eoi '(rpm|deb)$')
+            distpkg_manager "${@}"
             ;;
         *)
             echo -e "${red}ERROR: First argument needs to be \"autoremove\", \"install\", or \"remove\"!!!${NC}"
@@ -52,7 +56,7 @@ function input_check() {
 }
 
 function package_check() {
-    case "${1,,}" in
+    case "${1}" in
         rpm)
             distpkg="rpm"
             ;;
@@ -93,16 +97,12 @@ if [[ $# -eq 0 ]] ; then
     else
         pkg_update
     fi
-elif [[ $# -eq 1 ]] ; then
-    package_check $(echo "${1}" | grep -Eoi '(rpm|deb)$')
-    distpkg_manager "${1}"
-# elif [[ $# -ge 2 ]] ; then
-else
+elif [[ $# -ge 2 ]] ; then
     input_check "${@}"
-# else
-#     echo "ERROR: You need either zero or two option for the script."
-#     echo "USAGE: $0 [argument]"
-#     exit 1
+else
+     echo "ERROR: You need either zero or two or more option for the script."
+     echo "USAGE: $0 [option] [argument]+"
+     exit 1
 fi
 
 # checking for Flatpak
