@@ -53,14 +53,16 @@ function distpkg_manager() {
 function input_check() {
     case "${1,,}" in
         install | remove)
-            pkg_manager "${@}"
+            if package_check $(echo "${2}" | grep -Eoi '(rpm|deb)$') ; then
+                distpkg_manager "${@}"
+            else
+                pkg_manager "${@}"
+            fi
             ;;
         autoremove)
+            echo -e "${yellow}WARNING: autoremove doesn't take any arquments!!${NC}"
+            echo -e "${green}We have remove the arquments and will run autoremove anyways.${NC}"
             pkg_manager "${1}"
-            ;;
-        --install | --remove)
-            package_check $(echo "${2}" | grep -Eoi '(rpm|deb)$')
-            distpkg_manager "${@}"
             ;;
         *)
             echo -e "${red}ERROR: First argument needs to be \"autoremove\", \"install\", or \"remove\"!!!${NC}"
@@ -84,11 +86,11 @@ function input_check_arch() {
             ;;
         update)
             echo -e "${yellow}WARNING: Update doesn't take any arquments!!${NC}"
-            echo -e "${green}We have remove the arquments and will run the updates instead${NC}"
+            echo -e "${green}We have remove the arquments and will run the updates anyways.${NC}"
             sudo "${pkg}" -Syyu
             ;;
         *)
-            echo -e "${red}ERROR: First argument needs to be \"autoremove\", \"install\", or \"remove\"!!!${NC}"
+            echo -e "${red}ERROR: First argument needs to be \"search\", \"install\", or \"remove\"!!!${NC}"
             exit 2
     esac
 }
@@ -101,9 +103,6 @@ function package_check() {
         deb)
             distpkg="dpkg"
             ;;
-        *)
-            echo -e "${red}ERROR: For single arguemnts, you need an RPM or a DEB package!!!${NC}"
-            exit 2
     esac
 }
 
@@ -113,7 +112,7 @@ function distro_check() {
         if sudo apt list --installed nala 2> /dev/null | grep -i installed > /dev/null ; then
             pkg="nala"
         else
-            echo -e "${cyan}Installing nala since it is better than apt${NC}"
+            echo -e "${cyan}Installing nala since it is better than apt.${NC}"
             sudo apt install -y nala
             pkg="nala"
         fi
@@ -130,6 +129,11 @@ function distro_check() {
     fi
 }
 
+function pkg_options() {
+    echo -e "Valid options are\n1. install\n2. remove\n3. autoremove."
+    echo -e "For Install and Remove, you need to add package names as well"
+}
+
 distro_check
 
 if [[ $# -eq 0 ]] ; then
@@ -142,11 +146,14 @@ if [[ $# -eq 0 ]] ; then
     fi
 elif [[ $# -eq 1 ]] ; then
     if grep -iE '(archlinux)' "${version}" > /dev/null ; then
-        echo "ERROR: You can't run this script with one argument on Arch based Distros"
-        echo "USAGE: $0 [option] [argument]"
+        echo -e "${red}ERROR: You can't run this script with one argument on Arch based Distros.${NC}"
+        echo -e "${green}USAGE: $0 [option] [argument]${NC}"
         exit 1
     elif [[ "${1,,}" -eq "autoremove" ]] ; then
         sudo "${pkg}" "${1,,}"
+    else
+        echo -e "${red}ERROR: Not a valid option!!${NC}"
+        pkg_options
     fi
 elif [[ $# -ge 2 ]] ; then
     if grep -iE '(archlinux)' "${version}" > /dev/null ; then
@@ -155,8 +162,8 @@ elif [[ $# -ge 2 ]] ; then
         input_check "${@}"
     fi
 else
-    echo "ERROR: You need either zero, or two or more option for the script."
-    echo "USAGE: $0 [option] [argument]+"
+    ech -e "${red}ERROR: You need either zero, or two or more option for the script.${NC}"
+    echo -e "${green}USAGE: $0 [option] [argument]{$NC}"
     exit 1
 fi
 
