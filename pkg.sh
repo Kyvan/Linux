@@ -86,6 +86,7 @@ function distro_check() {
     else
         echo "Why you being difficult?"
         echo "Do your shit manually."
+        exit 0
     fi
 }
 
