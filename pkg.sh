@@ -30,7 +30,7 @@ function pkg_manager() {
     echo -e "${blue}Installing new packages...${NC}"
     echo -e "${cyan}${pkg} ${@}${NC}"
     sudo "${pkg}" "${@}"
-    echo -e "${green}Installing new packages done...${NC}"
+    echo -e "${green}Finished installing new packages...${NC}"
     exit 0
 }
 
@@ -38,7 +38,7 @@ function pkg_update_arch() {
     echo -e "${blue}Installing new packages...${NC}"
     echo -e "${cyan}${pkg} -Syyu${NC}"
     sudo "${pkg}" -Syyu
-    echo -e "${green}Installing new packages done...${NC}"
+    echo -e "${green}Finished installing new packages...${NC}"
     exit 0
     }
 
@@ -46,7 +46,7 @@ function distpkg_manager() {
     echo -e "${blue}Installing new packages...${NC}"
     echo -e "${cyan}${distpkg} ${@}${NC}"
     sudo "${distpkg}" "${@}"
-    echo -e "${green}Installing new packages done...${NC}"
+    echo -e "${green}Finished installing new packages...${NC}"
     exit 0
 }
 
