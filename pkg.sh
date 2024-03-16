@@ -75,19 +75,23 @@ function input_check_arch() {
         install)
             echo -e "${cyan}${pkg} -Syy ${@:2}${NC}"
             sudo "${pkg}" -Syy "${@:2}"
+            exit 0
             ;;
         remove)
             echo -e "${cyan}${pkg} -R ${@:2}${NC}"
             sudo "${pkg}" -R "${@:2}"
+            exit 0
             ;;
         search)
             echo -e "${cyan}${pkg} -Q ${@:2}${NC}"
             sudo "${pkg}" -Q "${@:2}"
+            exit 0
             ;;
         update)
             echo -e "${yellow}WARNING: Update doesn't take any arquments!!${NC}"
             echo -e "${green}We have remove the arquments and will run the updates anyways.${NC}"
             sudo "${pkg}" -Syyu
+            exit 0
             ;;
         *)
             echo -e "${red}ERROR: First argument needs to be \"search\", \"install\", or \"remove\"!!!${NC}"
