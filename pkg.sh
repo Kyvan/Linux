@@ -166,7 +166,7 @@ elif [[ $# -ge 2 ]] ; then
         input_check "${@}"
     fi
 else
-    ech -e "${red}ERROR: You need either zero, or two or more option for the script.${NC}"
+    echo -e "${red}ERROR: You need either zero, or two or more option for the script.${NC}"
     echo -e "${green}USAGE: $0 [option] [argument]{$NC}"
     exit 1
 fi
