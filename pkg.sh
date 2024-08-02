@@ -39,7 +39,6 @@ function pkg_update_arch() {
     echo -e "${cyan}${pkg} -Syyu${NC}"
     sudo "${pkg}" -Syyu
     echo -e "${green}Finished installing new packages...${NC}"
-    exit 0
     }
 
 function distpkg_manager() {
