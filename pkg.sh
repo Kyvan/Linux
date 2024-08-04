@@ -172,7 +172,7 @@ fi
 
 # checking for Flatpak
 function flatpakCheck() {
-    echo -e "${blue}would you like to check for flatpack udpates? (${green}Yes${NC}/${red}No${NC})${NC} -- ${cyan}Default is YES${NC}"
+    echo -e "${blue}would you like to check for flatpack udpates? (${green}Yes${NC}/${red}No${NC}${blue}) -- ${cyan}Default is YES${NC}"
     read -r flatAnswer 
     case "${flatAnswer,,}" in
         y | yes | '')
