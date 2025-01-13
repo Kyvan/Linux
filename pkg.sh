@@ -1,4 +1,4 @@
-#!/bin/bash -ux
+#!/bin/bash -u
 
 # variables neede dof the script to work
 version=/proc/version
@@ -52,9 +52,17 @@ function distpkg_manager() {
 function input_check() {
     case "${1,,}" in
         install | remove)
-            if package_check $(echo "${2}" | grep -Eo '(rpm|deb)$') ; then
-                distpkg_manager "${@}"
-            else
+            if echo "${2}" | grep -Eo '(rpm|deb)$' ; then
+		package_check $(echo "${2}" | grep -Eo '(rpm|deb)$')
+		case "${1,,}" in
+			install)
+		                distpkg_manager --install "${2}"
+				;;
+			remove)
+				distpkg_manager --uninstall "${2}"
+				;;
+		esac
+ 	    else
                 pkg_manager "${@}"
             fi
             ;;
